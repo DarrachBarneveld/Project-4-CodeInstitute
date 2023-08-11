@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "https://coolcoders-b69260c4617a.herokuapp.com/",
+    "coolcoders-b69260c4617a.herokuapp.com",
     "localhost",
     "127.0.0.1",
     "127.0.0.1:8000",
