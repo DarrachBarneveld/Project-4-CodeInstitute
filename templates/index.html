@@ -2,10 +2,16 @@
 
 <div class="container-fluid">
   <div class="row">
-    <!-- Blog Entries Column -->
-    <div class="col-12">
-      <div class="row"></div>
-    </div>
+    <h1>Category List</h1>
+    <ul>
+      {% for category in category_list %}
+      <li>
+        <button class="category-button" data-category-id="{{ category.title }}">
+          {{ category.title }}
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
     {%endblock%}
   </div>
 </div>

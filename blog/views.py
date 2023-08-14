@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.views import generic, View
-from .models import Post
+from .models import Post, Category
 
 
 # Create your views here.
+class CategoryList(generic.ListView):
+    model = Category
+    queryset = Category.objects.all()
+    template_name = "index.html"
 
 
 class PostList(generic.ListView):
