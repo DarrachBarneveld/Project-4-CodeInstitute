@@ -5,6 +5,7 @@ from django_summernote.admin import SummernoteModelAdmin
 
 class PostInline(admin.TabularInline):
     model = Post
+    fields = ("title", "approved", "excerpt")
     extra = 0
 
 
