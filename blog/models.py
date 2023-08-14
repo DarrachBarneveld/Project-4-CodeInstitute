@@ -5,6 +5,17 @@ from cloudinary.models import CloudinaryField
 STATUS = ((0, "Pending"), (1, "Published"))
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.title
+
+
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
@@ -13,6 +24,7 @@ class Post(models.Model):
     )
     featured_image = CloudinaryField("image", default="placeholder")
     excerpt = models.TextField(blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
     updated_on = models.DateTimeField(auto_now=True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
@@ -37,6 +49,7 @@ class Comment(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
+    status = models.IntegerField(choices=STATUS, default=0)
 
     class Meta:
         ordering = ["created_on"]
