@@ -32,3 +32,16 @@ class CategoryPostsView(View):
                 "category_list": category_list,
             },
         )
+
+
+class PostDetail(View):
+    def get(self, request, slug, *args, **kwargs):
+        queryset = Post.objects.filter(approved=True)
+        post = get_object_or_404(queryset, slug="testing-post")
+        print(slug)
+
+        return render(
+            request,
+            "post_detail.html",
+            {"post": post},
+        )

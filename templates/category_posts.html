@@ -4,15 +4,24 @@
 <!--  -->
 {{ block.super }}
 
-
 <div class="container-fluid">
-    <ul>
-      {% for post in posts %}
-      <li>{{post.title}}</li>
-
-      {% endfor %}
-    </ul>
+  {% for post in posts %}
+  <div class="card">
+    <img
+      class="card-img-top"
+      src=" {{ post.featured_image.url }}"
+      alt="Card image cap"
+    />
+    <div class="card-body">
+      <h5 class="card-title">{{post.title}}</h5>
+      <p class="card-text">{{post.excerpt}}</p>
+      <p>{{post.slug}}</p>
+      <a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary"
+        >View More</a
+      >
+    </div>
   </div>
+  {% endfor %}
 </div>
 
 {% endblock %}
