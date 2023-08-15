@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
 from .models import Post, Category
@@ -16,19 +17,29 @@ class PostList(generic.ListView):
     template_name = "index.html"
 
 
-class CategoryPostsView(View):
+class CategoryPosts(generic.ListView):
     template_name = "category_posts.html"
+    paginate_by = 1
 
     def get(self, request, slug, *args, **kwargs):
         category = get_object_or_404(Category, title=slug)
         category_list = Category.objects.all()
         posts = Post.objects.filter(category=category)
 
+        # Create a Paginator object
+        paginator = Paginator(posts, self.paginate_by)
+
+        # Get the current page number from the request's GET parameters
+        page_number = request.GET.get("page")
+
+        # Get the Page object for the current page
+        page = paginator.get_page(page_number)
+
         return render(
             request,
             "category_posts.html",
             {
-                "posts": posts,
+                "posts": page,
                 "category_list": category_list,
             },
         )
