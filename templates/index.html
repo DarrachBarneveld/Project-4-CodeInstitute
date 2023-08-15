@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+<!--  -->
+{% block content %}
 
 <div class="container-fluid">
   <div class="row">
@@ -6,12 +8,19 @@
     <ul>
       {% for category in category_list %}
       <li>
-        <button class="category-button" data-category-id="{{ category.title }}">
+        <a href="{% url 'category_posts' category.title  %}">
           {{ category.title }}
-        </button>
+        </a>
       </li>
       {% endfor %}
     </ul>
-    {%endblock%}
   </div>
 </div>
+
+<div class="container">
+  {% block child_specific %}
+  <!--  -->
+  {% endblock %}
+</div>
+{%endblock%}
+<!--  -->
