@@ -20,7 +20,7 @@ class PostList(generic.ListView):
 
 class CategoryPosts(generic.ListView):
     template_name = "category_posts.html"
-    paginate_by = 1
+    paginate_by = 2
 
     def get(self, request, slug, *args, **kwargs):
         category = get_object_or_404(Category, title=slug)
