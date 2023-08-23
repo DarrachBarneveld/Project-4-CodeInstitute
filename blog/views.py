@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
 from .models import Post, Category
+from .forms import PostForm
 
 
 # Create your views here.
@@ -64,7 +65,5 @@ class AddPost(View):
         return render(
             request,
             "add_post.html",
-            {
-                "category_list": category_list,
-            },
+            {"category_list": category_list, "post_form": PostForm()},
         )
