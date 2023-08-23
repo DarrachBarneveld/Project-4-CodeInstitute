@@ -56,3 +56,11 @@ class PostDetail(View):
             "post_detail.html",
             {"post": post},
         )
+
+
+class AddPost(View):
+    def get(self, request, *args, **kwargs):
+        return render(
+            request,
+            "add_post.html",
+        )
