@@ -60,7 +60,11 @@ class PostDetail(View):
 
 class AddPost(View):
     def get(self, request, *args, **kwargs):
+        category_list = Category.objects.all()
         return render(
             request,
             "add_post.html",
+            {
+                "category_list": category_list,
+            },
         )
