@@ -59,11 +59,20 @@ class PostDetail(View):
         )
 
 
-class AddPost(View):
-    def get(self, request, *args, **kwargs):
-        category_list = Category.objects.all()
-        return render(
-            request,
-            "add_post.html",
-            {"category_list": category_list, "post_form": PostForm()},
-        )
+class AddPost(generic.CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = "add_post.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # def get(self, request, *args, **kwargs):
+    #     category_list = Category.objects.all()
+    #     return render(
+    #         request,
+    #         "add_post.html",
+    #         {"category_list": category_list, "post_form": PostForm()},
+    #     )

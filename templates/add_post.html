@@ -6,7 +6,7 @@
 
 <div class="row justify-content-center p-4">
   <form class="w-auto bg-white rounded-2 p-4" method="post">
-    {{ post_form | crispy }}
+    {{ form | crispy }}
     <!--  -->
     {% csrf_token %}
     <!-- <div class="mb-3">
@@ -36,6 +36,7 @@
       <label class="form-check-label" for="exampleCheck1">Check me out</label>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button> -->
+    <button type="submit" class="btn btn-outline-dark">Submit</button>
   </form>
 </div>
 
