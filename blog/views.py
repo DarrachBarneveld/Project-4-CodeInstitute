@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.models import User
 from django.views import generic, View
 from .models import Post, Category
 from .forms import PostForm
@@ -57,6 +58,12 @@ class PostDetail(View):
             "post_detail.html",
             {"post": post},
         )
+
+
+class Profile(View):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        return render(request, "profile.html", {"user": user})
 
 
 class AddPost(generic.CreateView):

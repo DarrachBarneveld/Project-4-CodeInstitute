@@ -1,5 +1,6 @@
 .nav-link {
   position: relative;
+  text-transform: capitalize;
 }
 
 .nav-link::after {
@@ -7,15 +8,19 @@
   transition: all 450ms;
   opacity: 0;
   height: 2px;
-  width: 90%;
+  width: 80%;
   background-color: greenyellow;
   position: absolute;
   bottom: 0;
-  left: 5%;
+  left: 10%;
 }
 
 .nav-link:hover::after {
   opacity: 1;
+}
+
+.nav-link i {
+  margin-right: 5px;
 }
 
 body {
