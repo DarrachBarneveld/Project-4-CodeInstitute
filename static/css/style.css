@@ -19,7 +19,7 @@
   opacity: 1;
 }
 
-.nav-link i {
+i {
   margin-right: 5px;
 }
 
@@ -112,3 +112,5 @@ img {
     transform: translateY(0);
   }
 }
+
+/*  */
