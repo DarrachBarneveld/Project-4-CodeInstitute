@@ -5,37 +5,15 @@
 {% block content %}
 
 <div class="row justify-content-center p-4">
-  <form class="w-auto bg-white rounded-2 p-4" method="post">
+  <form
+    class="w-auto bg-white rounded-2 p-4"
+    method="post"
+    enctype="multipart/form-data"
+  >
     {{ form | crispy }}
     <!--  -->
     {% csrf_token %}
-    <!-- <div class="mb-3">
-      <label for="title" class="form-label">Title</label>
-      <input type="text" class="form-control" id="title" />
-    </div>
-    <div class="mb-3">
-      <label for="category" class="form-label">Category</label>
-      <select class="form-select" aria-label="Default select example">
-        <option selected>Choose a category</option>
-        {% for category in category_list %}
-        <option value="{{category}}">{{category}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="mb-3">
-      <label for="content" class="form-label">Content</label>
-      <textarea
-        type="text"
-        class="form-control"
-        id="exampleInputPassword1"
-        rows="5"
-      ></textarea>
-    </div>
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button> -->
+
     <button type="submit" class="btn btn-outline-dark">Submit</button>
   </form>
 </div>
