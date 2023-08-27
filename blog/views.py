@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views import generic, View
@@ -89,30 +90,53 @@ class EditUserView(LoginRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        password_form = self.password_form_class(self.request.user, self.request.POST)
-        print(password_form.is_valid())
+        messages.success(self.request, "Profile updated successfully.")
+        return super().form_valid(form)
 
-        if password_form.is_valid():
-            password_form.save()
-            update_session_auth_hash(self.request, self.request.user)
-
-        return response
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error updating your profile.")
+        return super().form_invalid(form)
 
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         password_form = self.password_form_class(self.request.user, self.request.POST)
+        context = self.get_context_data(**kwargs)
 
-        if password_form.is_valid() and "password_change" in request.POST:
-            password_form.save()
-            update_session_auth_hash(self.request, self.request.user)
-            return redirect("home")
-        if "delete_account" in request.POST:
-            self.object = self.get_object()
-            self.object.delete()
-            return redirect("home")
+        if "password_change" in request.POST:
+            if password_form.is_valid():
+                password_form.save()
+                update_session_auth_hash(self.request, self.request.user)
+                messages.success(self.request, "Password changed successfully.")
+            else:
+                messages.error(
+                    self.request, "There was an error changing your password."
+                )
+                return self.render_to_response(context)
 
-        else:
-            return super().post(request, *args, **kwargs)
+            return self.render_to_response(context)
+
+        return super().post(request, *args, **kwargs)
+
+    # def post(self, request, *args, **kwargs):
+    #     form = self.get_form()
+    #     password_form = self.password_form_class(self.request.user, self.request.POST)
+
+    #     if "password_change" in request.POST:
+    #         if password_form.is_valid():
+    #             password_form.save()
+    #             update_session_auth_hash(self.request, self.request.user)
+    #             return redirect(self.success_url)
+
+    #         else:
+    #             self.form_valid(form)
+
+    #     elif "delete_account" in request.POST:
+    #         user = self.get_object()
+    #         user.delete()
+    #         return redirect("home")
+
+    #     else:
+    #         return super().post(request, *args, **kwargs)
 
 
 class AddPost(generic.CreateView):
@@ -123,3 +147,8 @@ class AddPost(generic.CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+    # if "delete_account" in request.POST:
+    #         self.object = self.get_object()
+    #         self.object.delete()
+    #         return redirect("home")

@@ -7,12 +7,14 @@
     <button type="submit">Save Changes</button>
   </form>
 
-  <h2>Change Password</h2>
-
   <form method="post">
     {% csrf_token %} {{ password_form.as_p }}
     <button type="submit" name="password_change">Change Password</button>
   </form>
+
+  {% if password_form.errors %}
+  <div class="error-message">There was an error changing your password.</div>
+  {% endif %}
 
   <form method="post">
     {% csrf_token %}
