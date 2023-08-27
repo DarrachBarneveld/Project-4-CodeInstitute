@@ -49,8 +49,8 @@ class CategoryPosts(generic.ListView):
 class PostDetail(View):
     def get(self, request, slug, *args, **kwargs):
         queryset = Post.objects.filter(approved=True)
-        post = get_object_or_404(queryset, slug="testing-post")
-        print(slug)
+        newslug = slug.split("/")[-1]
+        post = get_object_or_404(queryset, slug=newslug)
 
         return render(
             request,
@@ -66,5 +66,4 @@ class AddPost(generic.CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        print(self.request)
         return super().form_valid(form)
