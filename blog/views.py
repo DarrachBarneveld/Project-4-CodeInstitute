@@ -63,7 +63,10 @@ class PostDetail(View):
 class Profile(View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        return render(request, "profile.html", {"user": user})
+        posts = Post.objects.filter(approved=True, author=user)
+        print(posts)
+
+        return render(request, "profile.html", {"user": user, "posts": posts})
 
 
 class AddPost(generic.CreateView):
