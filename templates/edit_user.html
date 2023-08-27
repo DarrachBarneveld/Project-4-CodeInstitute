@@ -12,8 +12,18 @@
     <button type="submit" name="password_change">Change Password</button>
   </form>
 
-  {% if password_form.errors %}
-  <div class="error-message">There was an error changing your password.</div>
+  {% if password_form_errors %}
+  <div class="error-message">
+    There was an error changing your password:
+    <ul>
+      {% for field_errors in password_form_errors.values %}
+      <!--  -->
+
+      {% for error in field_errors %}
+      <li>{{ error }}</li>
+      {% endfor %} {% endfor %}
+    </ul>
+  </div>
   {% endif %}
 
   <form method="post">

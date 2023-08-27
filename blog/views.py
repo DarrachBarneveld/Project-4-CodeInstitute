@@ -108,6 +108,12 @@ class EditUserView(LoginRequiredMixin, UpdateView):
                 update_session_auth_hash(self.request, self.request.user)
                 messages.success(self.request, "Password changed successfully.")
             else:
+                context = self.get_context_data(
+                    password_form=password_form,
+                    password_form_errors=password_form.errors,
+                )
+
+                print(context)
                 messages.error(
                     self.request, "There was an error changing your password."
                 )
