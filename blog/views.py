@@ -1,9 +1,15 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
 from django.views import generic, View
+from django.urls import reverse_lazy
 from .models import Post, Category
-from .forms import PostForm
+from .forms import PostForm, EditUserForm
 
 
 # Create your views here.
@@ -64,9 +70,49 @@ class Profile(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         posts = Post.objects.filter(approved=True, author=user)
-        print(posts)
 
         return render(request, "profile.html", {"user": user, "posts": posts})
+
+
+class EditUserView(LoginRequiredMixin, UpdateView):
+    template_name = "edit_user.html"
+    success_url = reverse_lazy("profile")
+    form_class = EditUserForm
+    password_form_class = PasswordChangeForm
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["password_form"] = self.password_form_class(user=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        password_form = self.password_form_class(self.request.user, self.request.POST)
+        print(password_form.is_valid())
+
+        if password_form.is_valid():
+            password_form.save()
+            update_session_auth_hash(self.request, self.request.user)
+
+        return response
+
+    def post(self, request, *args, **kwargs):
+        password_form = self.password_form_class(self.request.user, self.request.POST)
+
+        if password_form.is_valid() and "password_change" in request.POST:
+            password_form.save()
+            update_session_auth_hash(self.request, self.request.user)
+            return redirect("home")
+        if "delete_account" in request.POST:
+            self.object = self.get_object()
+            self.object.delete()
+            return redirect("home")
+
+        else:
+            return super().post(request, *args, **kwargs)
 
 
 class AddPost(generic.CreateView):
