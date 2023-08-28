@@ -65,45 +65,6 @@ class PostDetail(View):
             {"post": post},
         )
 
-    template_name = "update_profile.html"
-    user_form_class = EditProfileForm
-    password_form_class = PasswordChangeForm
-
-    def get_context_data(self):
-        user = self.request.user
-        context = {
-            "user_form": self.user_form_class(instance=user),
-            "password_form": self.password_form_class(user),
-        }
-        return context
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data()
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        user_form = self.user_form_class(request.POST, instance=user)
-        password_form = self.password_form_class(user, request.POST)
-
-        if user_form.is_valid():
-            user_form.save()
-            messages.success(request, "User information updated.")
-            return redirect("profile")
-
-        if password_form.is_valid():
-            new_password = password_form.cleaned_data["new_password1"]
-            user.set_password(new_password)
-            user.save()
-            messages.success(request, "Password changed successfully.")
-            return redirect("profile")
-
-        context = {
-            "user_form": user_form,
-            "password_form": password_form,
-        }
-        return render(request, self.template_name, context)
-
 
 class Profile(View):
     def get(self, request, *args, **kwargs):
@@ -131,8 +92,8 @@ class UpdateProfileView(View):
     def get_context_data(self, user_form=None, password_form=None):
         user = self.request.user
         context = {
-            "user_form": self.user_form_class(instance=user),
-            "password_form": self.password_form_class(user),
+            "user_form": user_form or self.user_form_class(instance=user),
+            "password_form": password_form or self.password_form_class(user),
         }
         return context
 
@@ -156,7 +117,6 @@ class UpdateProfileView(View):
                 return render(request, self.template_name, context)
 
         if "update_profile" in request.POST:
-            print("fire")
             if user_form.is_valid():
                 user_form.save()
                 return redirect("profile")
