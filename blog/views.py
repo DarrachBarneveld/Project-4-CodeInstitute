@@ -1,8 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import UpdateView
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -10,7 +8,8 @@ from django.shortcuts import redirect, render
 from django.views import generic, View
 from django.urls import reverse_lazy
 from .models import Post, Category
-from .forms import PostForm, EditUserForm
+from .forms import PostForm, EditProfileForm
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 # Create your views here.
@@ -66,6 +65,45 @@ class PostDetail(View):
             {"post": post},
         )
 
+    template_name = "update_profile.html"
+    user_form_class = EditProfileForm
+    password_form_class = PasswordChangeForm
+
+    def get_context_data(self):
+        user = self.request.user
+        context = {
+            "user_form": self.user_form_class(instance=user),
+            "password_form": self.password_form_class(user),
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        user_form = self.user_form_class(request.POST, instance=user)
+        password_form = self.password_form_class(user, request.POST)
+
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, "User information updated.")
+            return redirect("profile")
+
+        if password_form.is_valid():
+            new_password = password_form.cleaned_data["new_password1"]
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, "Password changed successfully.")
+            return redirect("profile")
+
+        context = {
+            "user_form": user_form,
+            "password_form": password_form,
+        }
+        return render(request, self.template_name, context)
+
 
 class Profile(View):
     def get(self, request, *args, **kwargs):
@@ -73,76 +111,6 @@ class Profile(View):
         posts = Post.objects.filter(approved=True, author=user)
 
         return render(request, "profile.html", {"user": user, "posts": posts})
-
-
-class EditUserView(LoginRequiredMixin, UpdateView):
-    template_name = "edit_user.html"
-    success_url = reverse_lazy("profile")
-    form_class = EditUserForm
-    password_form_class = PasswordChangeForm
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["password_form"] = self.password_form_class(user=self.request.user)
-        return context
-
-    def form_valid(self, form):
-        messages.success(self.request, "Profile updated successfully.")
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "There was an error updating your profile.")
-        return super().form_invalid(form)
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        password_form = self.password_form_class(self.request.user, self.request.POST)
-        context = self.get_context_data(**kwargs)
-
-        if "password_change" in request.POST:
-            if password_form.is_valid():
-                password_form.save()
-                update_session_auth_hash(self.request, self.request.user)
-                messages.success(self.request, "Password changed successfully.")
-            else:
-                context = self.get_context_data(
-                    password_form=password_form,
-                    password_form_errors=password_form.errors,
-                )
-
-                print(context)
-                messages.error(
-                    self.request, "There was an error changing your password."
-                )
-                return self.render_to_response(context)
-
-            return self.render_to_response(context)
-
-        return super().post(request, *args, **kwargs)
-
-    # def post(self, request, *args, **kwargs):
-    #     form = self.get_form()
-    #     password_form = self.password_form_class(self.request.user, self.request.POST)
-
-    #     if "password_change" in request.POST:
-    #         if password_form.is_valid():
-    #             password_form.save()
-    #             update_session_auth_hash(self.request, self.request.user)
-    #             return redirect(self.success_url)
-
-    #         else:
-    #             self.form_valid(form)
-
-    #     elif "delete_account" in request.POST:
-    #         user = self.get_object()
-    #         user.delete()
-    #         return redirect("home")
-
-    #     else:
-    #         return super().post(request, *args, **kwargs)
 
 
 class AddPost(generic.CreateView):
@@ -154,7 +122,55 @@ class AddPost(generic.CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    # if "delete_account" in request.POST:
-    #         self.object = self.get_object()
-    #         self.object.delete()
-    #         return redirect("home")
+
+class UpdateProfileView(View):
+    template_name = "update_profile.html"
+    user_form_class = EditProfileForm
+    password_form_class = PasswordChangeForm
+
+    def get_context_data(self, user_form=None, password_form=None):
+        user = self.request.user
+        context = {
+            "user_form": self.user_form_class(instance=user),
+            "password_form": self.password_form_class(user),
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+
+        user_form = self.user_form_class(request.POST, instance=user)
+        password_form = self.password_form_class(user, request.POST)
+
+        if "password_change" in request.POST:
+            if password_form.is_valid():
+                password_form.save()
+                update_session_auth_hash(self.request, self.request.user)
+                return redirect("profile")
+            else:
+                context = self.get_context_data(password_form=password_form)
+                return render(request, self.template_name, context)
+
+        if "update_profile" in request.POST:
+            print("fire")
+            if user_form.is_valid():
+                user_form.save()
+                return redirect("profile")
+            else:
+                context = self.get_context_data(user_form=user_form)
+                print(context)
+                return render(request, self.template_name, context)
+
+        if "delete_account" in request.POST:
+            self.object = self.get_object()
+            self.object.delete()
+            return redirect("home")
+
+        context = self.get_context_data(
+            user_form=user_form, password_form=password_form
+        )
+        return render(request, self.template_name, context)

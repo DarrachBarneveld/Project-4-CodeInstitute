@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %} {% load crispy_forms_tags %}
+<section id="about" class="p-4">
+  <h1>Edit Your User Information</h1>
+
+  <form method="post">
+    {% csrf_token %} {{ user_form | crispy }}
+    <button type="submit" name="update_profile">Save Changes</button>
+  </form>
+
+  <h2>Change Your Password</h2>
+
+  <form method="post">
+    {% csrf_token %} {{ password_form | crispy}}
+    <button type="submit" name="password_change">Change Password</button>
+  </form>
+
+  <h2>Delete Your Account</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" name="delete_account">Delete Account</button>
+  </form>
+
+  {% endblock content %}
+</section>
