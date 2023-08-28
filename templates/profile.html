@@ -151,16 +151,17 @@
           <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
             <p class="card-text">{{post.excerpt}}</p>
-            <p class="card-text">
-              <small class="text-muted">
+            <p class="d-flex justify-content-between mb-0">
+              <small class="text-dark">
+                <i class="fa-solid fa-thumbs-up text-primary"></i>
                 {{ post.number_of_likes}}
-                <i class="fa-solid fa-thumbs-up"></i>
 
+                <i class="fa-solid fa-comments text-success"></i>
                 0
-                <i class="fa-solid fa-comments"></i>
-
-                {{ post.created_on }}
-                <i class="fas fa-calendar-alt"></i>
+              </small>
+              <small class="text-muted">
+                <i class="fas fa-calendar-alt text-end"></i>
+                {{post.created_on|date:"F d, Y" }}
               </small>
             </p>
           </div>

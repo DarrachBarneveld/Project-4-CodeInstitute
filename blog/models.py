@@ -6,15 +6,6 @@ from cloudinary.models import CloudinaryField
 STATUS = ((0, "Pending"), (1, "Published"))
 
 
-class CustomDateTimeField(models.DateTimeField):
-    def value_to_string(self, obj):
-        val = self.value_from_object(obj)
-        if val:
-            val.replace(microsecond=0)
-            return val.isoformat()
-        return ""
-
-
 class Category(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -35,9 +26,9 @@ class Post(models.Model):
     featured_image = CloudinaryField("image", default="placeholder")
     excerpt = models.CharField(max_length=200, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None)
-    updated_on = CustomDateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
     content = models.TextField()
-    created_on = CustomDateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=0)
     likes = models.ManyToManyField(User, related_name="blogpost_like", blank=True)
     approved = models.BooleanField(default=False)
