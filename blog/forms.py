@@ -17,6 +17,9 @@ class PostForm(forms.ModelForm):
 
 
 class EditProfileForm(UserChangeForm):
+    password = None
+
     class Meta:
         model = User
         fields = ("username", "email", "first_name", "last_name")
+        help_texts = {"username": None}

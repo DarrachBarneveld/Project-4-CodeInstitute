@@ -4,6 +4,11 @@
   --neon-blue-glow: 0 0 10px 5px #48abe0;
 }
 
+/* GLOBAL */
+.bg-custom {
+  background: var(--primary-light);
+}
+
 .nav-link {
   position: relative;
   text-transform: capitalize;
