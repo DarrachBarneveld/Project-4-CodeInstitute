@@ -1,3 +1,7 @@
+:root {
+  --primary-light: rgb(245, 245, 245);
+}
+
 .nav-link {
   position: relative;
   text-transform: capitalize;
@@ -114,3 +118,12 @@ img {
 }
 
 /*FORMS*/
+
+.signup,
+.login {
+  text-align: center;
+  padding: 20px 0;
+  background-color: var(--primary-light);
+}
+
+/* Footer */

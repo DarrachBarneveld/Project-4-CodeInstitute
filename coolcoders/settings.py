@@ -68,6 +68,8 @@ LOGOUT_REDIRECT_URL = "/"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
 
 MESSAGE_TAGS = {
     messages.DEBUG: "alert-info",
