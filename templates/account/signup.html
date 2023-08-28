@@ -7,19 +7,13 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 <!--  -->
 {% block content %}
-<div class="container">
-  <h1 class="page-title">{% trans "Sign up" %}</h1>
-  <hr class="home-break" />
-  <br />
-  <p class="text-center mt-3">
-    {% blocktrans %}Have an account?
-    <a href="{{ login_url }}" class="text-dark"><u>Log in</u></a
-    >{% endblocktrans %}
-  </p>
+<section class="container text-center text-light p-4">
+  <h1>{% trans "Sign up" %}</h1>
+  <hr />
   <div class="row justify-content-center">
-    <div class="col-11 col-md-6 col-lg-4 mt-3 mb-3">
+    <div class="col-12 col-md-6 col-lg-4 mt-5 mb-5">
       <form
-        class="signup"
+        class="signup text-dark"
         id="signup_form"
         method="post"
         action="{% url 'account_signup' %}"
@@ -41,6 +35,12 @@
         </button>
       </form>
     </div>
+    <hr />
+    <p class="text-center h5">
+      {% blocktrans %}Have an account?
+      <a href="{{ login_url }}"><u>Log in</u></a
+      >{% endblocktrans %}
+    </p>
   </div>
-</div>
+</section>
 {% endblock %}

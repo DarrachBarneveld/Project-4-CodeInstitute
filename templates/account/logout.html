@@ -3,14 +3,10 @@
 {% load i18n %}
 <!--  -->
 {% block head_title %}{% trans "Sign Out" %}{% endblock %} {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-8 mt-3 offset-md-2">
-      <h3>{% trans "Sign Out" %}</h3>
-
-      <p>{% trans 'Are you sure you want to sign out?' %}</p>
-    </div>
-  </div>
+<section class="container text-light text-center p-4">
+  <h1>{% trans "Sign Out" %}</h1>
+  <hr />
+  <p>{% trans 'Are you sure you want to sign out?' %}</p>
   <div class="row">
     <div class="col-md-8 mt-3 offset-md-2">
       <form method="post" action="{% url 'account_logout' %}">
@@ -21,11 +17,11 @@
           value="{{ redirect_field_value }}"
         />
         {% endif %}
-        <button class="btn btn-signup right" type="submit">
+        <button class="btn btn-success" type="submit">
           {% trans 'Sign Out' %}
         </button>
       </form>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}

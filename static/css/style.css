@@ -1,5 +1,7 @@
 :root {
   --primary-light: rgb(245, 245, 245);
+  --neon-green: rgb(57, 255, 20);
+  --neon-blue-glow: 0 0 10px 5px #48abe0;
 }
 
 .nav-link {
@@ -33,7 +35,7 @@ body {
 }
 
 main {
-  min-height: 100vh;
+  min-height: 80vh;
 }
 
 img {
@@ -122,8 +124,14 @@ img {
 .signup,
 .login {
   text-align: center;
-  padding: 20px 0;
+  padding: 2rem;
+  border-radius: 10px;
   background-color: var(--primary-light);
+  box-shadow: var(--neon-blue-glow);
+}
+
+.logout:hover {
+  background: var(--neon-green);
 }
 
 /* Footer */
