@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 from django_summernote.widgets import SummernoteWidget
@@ -23,3 +23,9 @@ class EditProfileForm(UserChangeForm):
         model = User
         fields = ("username", "email", "first_name", "last_name")
         help_texts = {"username": None}
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("body",)

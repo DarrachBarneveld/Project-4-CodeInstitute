@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django.views import generic, View
 from django.urls import reverse_lazy
 from .models import Post, Category
-from .forms import PostForm, EditProfileForm
+from .forms import PostForm, EditProfileForm, CommentForm
 from django.contrib.auth.forms import PasswordChangeForm
 
 
@@ -58,11 +58,20 @@ class PostDetail(View):
         queryset = Post.objects.filter(approved=True)
         newslug = slug.split("/")[-1]
         post = get_object_or_404(queryset, slug=newslug)
+        comments = post.comments.filter(approved=True).order_by("-created_on")
+        liked = False
+        if post.likes.filter(id=self.request.user.id).exists():
+            liked = True
 
         return render(
             request,
             "post_detail.html",
-            {"post": post},
+            {
+                "post": post,
+                "comments": comments,
+                "liked": liked,
+                "comment_form": CommentForm(),
+            },
         )
 
 
