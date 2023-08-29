@@ -6,6 +6,7 @@ from django.views import generic, View
 from .models import Post, Category, Comment
 from .forms import PostForm, EditProfileForm, CommentForm
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -127,8 +128,10 @@ class PostLike(View):
 
 
 class Profile(View):
-    def get(self, request, *args, **kwargs):
-        user = request.user
+    def get(self, request, slug, *args, **kwargs):
+        # user = request.user
+        queryset = User.objects.filter(username=slug)
+        user = get_object_or_404(queryset)
         posts = Post.objects.filter(approved=True, author=user)
         posts_with_comment_count = []
         for post in posts:
@@ -138,7 +141,7 @@ class Profile(View):
         return render(
             request,
             "profile.html",
-            {"user": user, "posts_with_comment_count": posts_with_comment_count},
+            {"user_object": user, "posts_with_comment_count": posts_with_comment_count},
         )
 
 
