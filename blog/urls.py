@@ -9,4 +9,5 @@ urlpatterns = [
     path("update_profile/", views.UpdateProfileView.as_view(), name="update_profile"),
     path("<slug:slug>/", views.CategoryPosts.as_view(), name="category_posts"),
     path("post/<slug:slug>/", views.PostDetail.as_view(), name="post_detail"),
+    path("like/<slug:slug>", views.PostLike.as_view(), name="post_like"),
 ]

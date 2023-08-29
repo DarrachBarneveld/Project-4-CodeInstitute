@@ -1,5 +1,6 @@
 :root {
   --primary-light: rgb(245, 245, 245);
+
   --neon-green: rgb(57, 255, 20);
   --neon-blue-glow: 0 0 10px 5px #48abe0;
 }
@@ -46,6 +47,20 @@ main {
 img {
   aspect-ratio: 1;
   object-fit: cover;
+}
+
+/* PROFILE */
+
+.profile-icon {
+  font-size: 6rem;
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000,
+    -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.gold {
+  color: goldenrod;
+  stroke-width: 1px;
+  stroke: #000000;
 }
 
 /* SOCIALS */
@@ -138,5 +153,3 @@ img {
 .logout:hover {
   background: var(--neon-green);
 }
-
-/* Footer */

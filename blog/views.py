@@ -1,12 +1,8 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, get_object_or_404, reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth import update_session_auth_hash
-from django.contrib import messages
-from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
 from django.views import generic, View
-from django.urls import reverse_lazy
 from .models import Post, Category, Comment
 from .forms import PostForm, EditProfileForm, CommentForm
 from django.contrib.auth.forms import PasswordChangeForm
@@ -106,6 +102,18 @@ class PostDetail(View):
                 "comment_form": CommentForm(),
             },
         )
+
+
+class PostLike(View):
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
+
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+
+        return HttpResponseRedirect(reverse("post_detail", args=[slug]))
 
 
 class Profile(View):
