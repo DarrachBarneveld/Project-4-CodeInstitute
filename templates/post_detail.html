@@ -37,7 +37,7 @@
               </div>
             </div>
             <!-- The number of likes goes before the closing strong tag -->
-            <strong class="h1">
+            <strong class="h3">
               {% if user.is_authenticated %}
               <form
                 class="d-inline"
@@ -146,7 +146,7 @@
         <div class="body">
           <div class="row">
             <div class="col-lg-12">
-              {% for post in popular_posts %}
+              {% for post, comment_count in popular_posts %}
               <div class="popular-posts mb-3">
                 <a
                   class="text-decoration-none text-dark"
@@ -172,7 +172,19 @@
                     {% endif %}
                   </div>
                   <p>{{post.excerpt}}</p>
-                  <hr />
+                  <p class="d-flex justify-content-between mb-0">
+                    <small class="text-dark">
+                      <i class="fa-solid fa-thumbs-up text-primary"></i>
+                      {{ post.number_of_likes}}
+
+                      <i class="fa-solid fa-comments text-success"></i>
+                      {{ comment_count }}
+                    </small>
+                    <small class="text-muted">
+                      <i class="fas fa-calendar-alt text-end"></i>
+                      {{post.created_on|date:"F d, Y" }}
+                    </small>
+                  </p>
                 </a>
               </div>
 

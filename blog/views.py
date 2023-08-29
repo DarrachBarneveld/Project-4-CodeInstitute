@@ -57,7 +57,11 @@ class PostDetail(View):
         popular_posts = queryset.filter(category=post.category, approved=True).exclude(
             pk=post.id
         )
-        print(popular_posts)
+        popular_posts_with_comment_count = []
+        for post in popular_posts:
+            comment_count = Comment.objects.filter(post=post, approved=True).count()
+            popular_posts_with_comment_count.append((post, comment_count))
+
         comments = post.comments.filter(approved=True).order_by("-created_on")
         liked = False
         if post.likes.filter(id=self.request.user.id).exists():
@@ -72,7 +76,7 @@ class PostDetail(View):
                 "commented": False,
                 "liked": liked,
                 "comment_form": CommentForm(),
-                "popular_posts": popular_posts,
+                "popular_posts": popular_posts_with_comment_count,
             },
         )
 
