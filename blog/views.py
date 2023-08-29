@@ -54,13 +54,14 @@ class PostDetail(View):
         queryset = Post.objects.filter(approved=True)
         newslug = slug.split("/")[-1]
         post = get_object_or_404(queryset, slug=newslug)
-        popular_posts = queryset.filter(category=post.category, approved=True).exclude(
-            pk=post.id
-        )
+        popular_posts = Post.objects.filter(
+            category=post.category, approved=True
+        ).exclude(pk=post.id)
         popular_posts_with_comment_count = []
-        for post in popular_posts:
+
+        for pop_post in popular_posts:
             comment_count = Comment.objects.filter(post=post, approved=True).count()
-            popular_posts_with_comment_count.append((post, comment_count))
+            popular_posts_with_comment_count.append((pop_post, comment_count))
 
         comments = post.comments.filter(approved=True).order_by("-created_on")
         liked = False

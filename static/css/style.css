@@ -2,6 +2,7 @@
   --primary-light: rgb(245, 245, 245);
   --primary-grey: rgb(210, 215, 211);
   --neon-green: rgb(57, 255, 20);
+  --primary-blue: #48abe0;
   --neon-blue-glow: 0 0 10px 5px #48abe0;
 }
 
@@ -53,7 +54,7 @@ img {
 
 .category {
   width: fit-content;
-  background-color: #48abe0;
+  background-color: var(--primary-blue);
   color: white;
   padding: 0.25rem 1rem;
   border-radius: 10px;
@@ -104,7 +105,7 @@ img {
   filter: brightness(0.9);
   background: var(--primary-light);
   transform: scale(0.998);
-  border: 1px solid #48abe0;
+  border: 1px solid var(--primary-blue);
 }
 /* PROFILE */
 
@@ -121,7 +122,6 @@ img {
 }
 
 .btn-like {
-  color: #e84610;
   border: none;
   background: transparent;
 }
