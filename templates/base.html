@@ -81,7 +81,7 @@
           <ul class="navbar-nav mb-2 mb-lg-0">
             {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'profile' %}"
+              <a class="nav-link" href="{% url 'profile' slug=user.username %}"
                 ><i class="fa-solid fa-user"></i> {{ user.username }}</a
               >
             </li>

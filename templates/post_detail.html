@@ -149,12 +149,12 @@
           <div class="row">
             <div class="col-lg-12">
               {% for post, comment_count in popular_posts %}
-              <div class="popular-posts mb-3">
-                <a
-                  class="text-decoration-none text-dark"
-                  href="{% url 'post_detail' post.slug  %}"
-                >
-                  <h5 class="m-b-0 text-capitalize text-primary">
+              <a
+                class="text-decoration-none text-dark"
+                href="{% url 'post_detail' post.slug  %}"
+              >
+                <div class="popular-posts mb-3">
+                  <h5 class="text-capitalize text-primary">
                     <strong> {{post.title}} </strong>
                   </h5>
                   <span class="text-muted"
@@ -187,8 +187,8 @@
                       {{post.created_on|date:"F d, Y" }}
                     </small>
                   </p>
-                </a>
-              </div>
+                </div>
+              </a>
 
               {% endfor %}
             </div>
