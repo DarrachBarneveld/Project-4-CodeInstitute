@@ -2,131 +2,196 @@
 <!--  -->
 {% load crispy_forms_tags %}
 
-<div class="masthead">
-  <div class="container">
-    <div class="row g-0">
-      <div class="col-md-6 masthead-text">
-        <!-- Post title goes in these h1 tags -->
-        <h1 class="post-title">{{ post.title }}</h1>
-        <!-- Post author goes before the | the post's created date goes after -->
-        <p class="post-subtitle">{{ post.author }} | {{ post.created_on }}</p>
-      </div>
-      <div class="d-none d-md-block col-md-6 masthead-image">
-        <!-- The featured image URL goes in the src attribute -->
-        {% if "placeholder" in post.featured_image.url %}
-        <img
-          src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
-          width="100%"
-        />
-        {% else %}
-        <img src=" {{ post.featured_image.url }}" width="100%" />
-        {% endif %}
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col card mb-4 mt-3 left top">
-      <div class="card-body">
-        <!-- The post content goes inside the card-text. -->
-        <!-- Use the | safe filter inside the template tags -->
-        <p class="card-text">{{ post.content | safe }}</p>
-        <div class="row">
-          <div class="col-1">
-            <!-- The number of likes goes before the closing strong tag -->
-            <strong>
-              {% if user.is_authenticated %}
-              <form
-                class="d-inline"
-                action="{% url 'post_like' post.slug %}"
-                method="POST"
-              >
-                {% csrf_token %} {% if liked %}
-                <button
-                  type="submit"
-                  name="blogpost_id"
-                  value="{{post.slug}}"
-                  class="btn-like"
-                >
-                  <i class="fas fa-heart"></i>
-                </button>
-                {% else %}
-                <button
-                  type="submit"
-                  name="blogpost_id"
-                  value="{{post.slug}}"
-                  class="btn-like"
-                >
-                  <i class="far fa-heart"></i>
-                </button>
-                {% endif %}
-              </form>
-              {% else %}
-              <span class="text-secondary"><i class="far fa-heart"></i></span>
-              {% endif %}
-              <!-- The number of likes goes before the closing strong tag -->
-              <span class="text-secondary">{{ post.number_of_likes }} </span>
-            </strong>
+<div id="main-content" class="blog-page">
+  <div class="row clearfix">
+    <div class="col-lg-8 col-md-12 left-box">
+      <article class="card single_post">
+        <div class="body p-3">
+          <div class="img-post border rounded">
+            {% if "placeholder" in post.featured_image.url %}
+            <img
+              src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
+              class="img-fluid"
+            />
+            {% else %}
+            <img class="img-fluid" src=" {{ post.featured_image.url }}" />
+            {% endif %}
           </div>
-          <div class="col-1">
-            {% with comments.count as total_comments %}
-            <strong class="text-secondary"
-              ><i class="far fa-comments"></i>
-              <!-- Our total_comments variable goes before the closing strong tag -->
-              {{ total_comments }}</strong
+          <h6
+            class="text-uppercase text-primary fw-bolder mt-1 text-decoration-underline"
+          >
+            {{post.category}}
+          </h6>
+
+          <h1>{{post.title}}</h1>
+          <div class="author">
+            <div class="avatar bg-primary">
+              <i class="fa-solid fa-trophy gold"></i>
+            </div>
+            <div class="author-body">
+              <label class="text-capitalize"
+                ><strong>{{post.author}}</strong>
+              </label>
+              <span class="text-secondary">{{post.created_on}}</span>
+            </div>
+          </div>
+
+          <hr />
+
+          <div class="mt-2 mb-2">{{ post.content | safe }}</div>
+        </div>
+      </article>
+      <section class="card p-3 mt-3">
+        <div class="header">
+          <h2>Comments 3</h2>
+        </div>
+        <hr />
+        <div class="body">
+          <ul class="comment-reply list-unstyled">
+            <li class="row clearfix">
+              <div class="icon-box col-md-2 col-4">
+                <img
+                  class="img-fluid img-thumbnail"
+                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  alt="Awesome Image"
+                />
+              </div>
+              <div class="text-box col-md-10 col-8 p-l-0 p-r0">
+                <h5 class="m-b-0">Gigi Hadid</h5>
+                <p>
+                  Why are there so many tutorials on how to decouple WordPress?
+                  how fast and easy it is to get it running (and keep it
+                  running!) and its massive ecosystem.
+                </p>
+                <ul class="list-inline">
+                  <li><a href="javascript:void(0);">Mar 09 2018</a></li>
+                  <li><a href="javascript:void(0);">Reply</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="row clearfix">
+              <div class="icon-box col-md-2 col-4">
+                <img
+                  class="img-fluid img-thumbnail"
+                  src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                  alt="Awesome Image"
+                />
+              </div>
+              <div class="text-box col-md-10 col-8 p-l-0 p-r0">
+                <h5 class="m-b-0">Christian Louboutin</h5>
+                <p>
+                  Great tutorial but few issues with it? If i try open post i
+                  get following errors. Please can you help me?
+                </p>
+                <ul class="list-inline">
+                  <li><a href="javascript:void(0);">Mar 12 2018</a></li>
+                  <li><a href="javascript:void(0);">Reply</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="row clearfix">
+              <div class="icon-box col-md-2 col-4">
+                <img
+                  class="img-fluid img-thumbnail"
+                  src="https://bootdey.com/img/Content/avatar/avatar4.png"
+                  alt="Awesome Image"
+                />
+              </div>
+              <div class="text-box col-md-10 col-8 p-l-0 p-r0">
+                <h5 class="m-b-0">Kendall Jenner</h5>
+                <p>
+                  Very nice and informative article. In all the years I've done
+                  small and side-projects as a freelancer, I've ran into a few
+                  problems here and there.
+                </p>
+                <ul class="list-inline">
+                  <li><a href="javascript:void(0);">Mar 20 2018</a></li>
+                  <li><a href="javascript:void(0);">Reply</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="card p-4 mt-3">
+        <div class="header">
+          <h2>
+            Leave a reply
+            <small
+              >Your email address will not be published. Required fields are
+              marked*</small
             >
-            {% endwith %}
+          </h2>
+        </div>
+        <div class="body">
+          <div class="comment-form">
+            <form class="row clearfix">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Your Name"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Email Address"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <textarea
+                    rows="4"
+                    class="form-control no-resize"
+                    placeholder="Please type what you want..."
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-block btn-primary">
+                  SUBMIT
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </div>
+      </section>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <hr />
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-8 card mb-4 mt-3">
-      <h3>Comments:</h3>
-      <div class="card-body">
-        <!-- We want a for loop inside the empty control tags to iterate through each comment in comments -->
-        {% for comment in comments %}
-        <div class="comments" style="padding: 10px">
-          <p class="font-weight-bold">
-            <!-- The commenter's name goes here. Check the model if you're not sure what that is -->
-            {{ comment.name }}
-            <span class="text-muted font-weight-normal">
-              <!-- The comment's created date goes here -->
-              {{ comment.created_on }}
-            </span>
-            wrote:
-          </p>
-          <!-- The body of the comment goes before the | -->
-          {{ comment.body | linebreaks }}
+    <div class="col-lg-4 col-md-12 right-box">
+      <div class="card p-3">
+        <div class="header">
+          <h2>Popular Posts</h2>
         </div>
-        <!-- Our for loop ends here -->
-        {% endfor %}
-      </div>
-    </div>
-    <div class="col-md-4 card mb-4 mt-3">
-      <div class="card-body">
-        <!-- For later -->
-        {% if commented %}
-        <div class="alert alert-success" role="alert">
-          Your comment is awaiting approval
+        <div class="body widget popular-post">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="single_post">
+                <p class="m-b-0">Apple Introduces Search Ads Basic</p>
+                <span>jun 22, 2018</span>
+                <div class="img-post">
+                  <img
+                    src="https://www.bootdey.com/image/280x280/87CEFA/000000"
+                    alt="Awesome Image"
+                  />
+                </div>
+              </div>
+              <div class="single_post">
+                <p class="m-b-0">new rules, more cars, more races</p>
+                <span>jun 8, 2018</span>
+                <div class="img-post">
+                  <img
+                    src="https://www.bootdey.com/image/280x280/87CEFA/000000"
+                    alt="Awesome Image"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        {% else %} {% if user.is_authenticated %}
-
-        <h3>Leave a comment:</h3>
-        <p>Posting as: {{ user.username }}</p>
-        <form method="post" style="margin-top: 1.3em">
-          {{ comment_form | crispy }} {% csrf_token %}
-          <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-        </form>
-        {% endif %} {% endif %}
       </div>
     </div>
   </div>

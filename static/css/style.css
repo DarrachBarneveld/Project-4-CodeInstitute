@@ -1,6 +1,5 @@
 :root {
   --primary-light: rgb(245, 245, 245);
-
   --neon-green: rgb(57, 255, 20);
   --neon-blue-glow: 0 0 10px 5px #48abe0;
 }
@@ -49,6 +48,49 @@ img {
   object-fit: cover;
 }
 
+/* POST DETAIL */
+
+.category {
+  width: fit-content;
+  background-color: #48abe0;
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: 10px;
+}
+
+.img-post img {
+  object-fit: fill;
+  position: relative;
+  overflow: hidden;
+  max-height: 500px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.author {
+  padding-top: 1rem;
+  border-bottom: 1px solid var(--primary-light);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.author-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  border: 1px solid black;
+}
+
 /* PROFILE */
 
 .profile-icon {
@@ -61,6 +103,12 @@ img {
   color: goldenrod;
   stroke-width: 1px;
   stroke: #000000;
+}
+
+.btn-like {
+  color: #e84610;
+  border: none;
+  background: transparent;
 }
 
 /* SOCIALS */
