@@ -24,16 +24,52 @@
           </h6>
 
           <h1>{{post.title}}</h1>
-          <div class="author">
-            <div class="avatar bg-primary">
-              <i class="fa-solid fa-trophy gold"></i>
+          <div class="d-flex justify-content-between">
+            <div class="author">
+              <div class="avatar bg-primary">
+                <i class="fa-solid fa-trophy gold"></i>
+              </div>
+              <div class="author-body">
+                <label class="text-capitalize"
+                  ><strong>{{post.author}}</strong>
+                </label>
+                <span class="text-secondary">{{post.created_on}}</span>
+              </div>
             </div>
-            <div class="author-body">
-              <label class="text-capitalize"
-                ><strong>{{post.author}}</strong>
-              </label>
-              <span class="text-secondary">{{post.created_on}}</span>
-            </div>
+            <!-- The number of likes goes before the closing strong tag -->
+            <strong class="h1">
+              {% if user.is_authenticated %}
+              <form
+                class="d-inline"
+                action="{% url 'post_like' post.slug %}"
+                method="POST"
+              >
+                {% csrf_token %} {% if liked %}
+                <button
+                  type="submit"
+                  name="blogpost_id"
+                  value="{{post.slug}}"
+                  class="btn-like"
+                >
+                  <i class="fas fa-heart"></i>
+                </button>
+                {% else %}
+                <button
+                  type="submit"
+                  name="blogpost_id"
+                  value="{{post.slug}}"
+                  class="btn-like"
+                >
+                  <i class="far fa-heart"></i>
+                </button>
+                {% endif %}
+              </form>
+              {% else %}
+              <span class="text-secondary"><i class="far fa-heart"></i></span>
+              {% endif %}
+              <!-- The number of likes goes before the closing strong tag -->
+              <span class="text-secondary">{{ post.number_of_likes }} </span>
+            </strong>
           </div>
 
           <hr />
@@ -43,121 +79,61 @@
       </article>
       <section class="card p-3 mt-3">
         <div class="header">
-          <h2>Comments 3</h2>
+          <h2>
+            {% with comments.count as total_comments %}
+            <strong>
+              <i class="far fa-comments"></i>
+              <!-- Our total_comments variable goes before the closing strong tag -->
+              {{ total_comments }}
+            </strong>
+            {% endwith %}
+          </h2>
         </div>
         <hr />
         <div class="body">
           <ul class="comment-reply list-unstyled">
+            {% for comment in comments %}
+
             <li class="row clearfix">
               <div class="icon-box col-md-2 col-4">
-                <img
-                  class="img-fluid img-thumbnail"
-                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                  alt="Awesome Image"
-                />
+                <div
+                  class="h-100 d-flex justify-content-center align-items-center border border-dark rounded-3 bg-primary"
+                >
+                  <i
+                    style="font-size: 4rem"
+                    class="fa-solid fa-trophy gold"
+                  ></i>
+                </div>
               </div>
               <div class="text-box col-md-10 col-8 p-l-0 p-r0">
-                <h5 class="m-b-0">Gigi Hadid</h5>
-                <p>
-                  Why are there so many tutorials on how to decouple WordPress?
-                  how fast and easy it is to get it running (and keep it
-                  running!) and its massive ecosystem.
-                </p>
-                <ul class="list-inline">
-                  <li><a href="javascript:void(0);">Mar 09 2018</a></li>
-                  <li><a href="javascript:void(0);">Reply</a></li>
-                </ul>
+                <h5 class="m-b-0 text-capitalize">{{comment.name}}</h5>
+                <p>{{comment.body | linebreaks}}</p>
+                <label class="list-inline text-primary">
+                  {{comment.created_on}}
+                </label>
               </div>
             </li>
-            <li class="row clearfix">
-              <div class="icon-box col-md-2 col-4">
-                <img
-                  class="img-fluid img-thumbnail"
-                  src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                  alt="Awesome Image"
-                />
-              </div>
-              <div class="text-box col-md-10 col-8 p-l-0 p-r0">
-                <h5 class="m-b-0">Christian Louboutin</h5>
-                <p>
-                  Great tutorial but few issues with it? If i try open post i
-                  get following errors. Please can you help me?
-                </p>
-                <ul class="list-inline">
-                  <li><a href="javascript:void(0);">Mar 12 2018</a></li>
-                  <li><a href="javascript:void(0);">Reply</a></li>
-                </ul>
-              </div>
-            </li>
-            <li class="row clearfix">
-              <div class="icon-box col-md-2 col-4">
-                <img
-                  class="img-fluid img-thumbnail"
-                  src="https://bootdey.com/img/Content/avatar/avatar4.png"
-                  alt="Awesome Image"
-                />
-              </div>
-              <div class="text-box col-md-10 col-8 p-l-0 p-r0">
-                <h5 class="m-b-0">Kendall Jenner</h5>
-                <p>
-                  Very nice and informative article. In all the years I've done
-                  small and side-projects as a freelancer, I've ran into a few
-                  problems here and there.
-                </p>
-                <ul class="list-inline">
-                  <li><a href="javascript:void(0);">Mar 20 2018</a></li>
-                  <li><a href="javascript:void(0);">Reply</a></li>
-                </ul>
-              </div>
-            </li>
+            <hr />
+            {% endfor %}
           </ul>
         </div>
       </section>
-      <section class="card p-4 mt-3">
-        <div class="header">
-          <h2>
-            Leave a reply
-            <small
-              >Your email address will not be published. Required fields are
-              marked*</small
-            >
-          </h2>
-        </div>
-        <div class="body">
-          <div class="comment-form">
-            <form class="row clearfix">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Your Name"
-                  />
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Email Address"
-                  />
-                </div>
-              </div>
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <textarea
-                    rows="4"
-                    class="form-control no-resize"
-                    placeholder="Please type what you want..."
-                  ></textarea>
-                </div>
-                <button type="submit" class="btn btn-block btn-primary">
-                  SUBMIT
-                </button>
-              </div>
-            </form>
+      <section class="card p-3 mt-3">
+        <h2>Like what you read? Leave a comment!</h2>
+        <hr />
+        <div class="card-body">
+          {% if commented %}
+          <div class="alert alert-success" role="alert">
+            Your comment is awaiting approval
           </div>
+          {% else %} {% if user.is_authenticated %}
+
+          <p>Posting as: {{ user.username }}</p>
+          <form method="post" style="margin-top: 1.3em">
+            {{ comment_form | crispy }} {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+          </form>
+          {% endif %} {% endif %}
         </div>
       </section>
     </div>
