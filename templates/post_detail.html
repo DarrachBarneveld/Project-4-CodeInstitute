@@ -30,8 +30,10 @@
                 <i class="fa-solid fa-trophy gold"></i>
               </div>
               <div class="author-body">
-                <label class="text-capitalize"
-                  ><strong>{{post.author}}</strong>
+                <label class="text-capitalize">
+                  <a href="{% url 'profile' slug=post.author.username %}"
+                    ><strong>{{post.author}}</strong></a
+                  >
                 </label>
                 <span class="text-secondary">{{post.created_on}}</span>
               </div>
@@ -82,7 +84,7 @@
           <h2>
             {% with comments.count as total_comments %}
             <strong>
-              <i class="far fa-comments"></i>
+              <i class="fas fa-comments text-success"></i>
               <!-- Our total_comments variable goes before the closing strong tag -->
               {{ total_comments }}
             </strong>
