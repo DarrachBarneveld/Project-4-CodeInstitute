@@ -1,5 +1,6 @@
 :root {
   --primary-light: rgb(245, 245, 245);
+  --primary-grey: rgb(210, 215, 211);
   --neon-green: rgb(57, 255, 20);
   --neon-blue-glow: 0 0 10px 5px #48abe0;
 }
@@ -91,6 +92,19 @@ img {
   border: 1px solid black;
 }
 
+.popular-posts {
+  padding: 1rem;
+  border: 1px solid var(--primary-grey);
+  border-radius: 0.5rem;
+  transition: 300ms;
+}
+
+.popular-posts:hover,
+.popular-posts:focus {
+  filter: brightness(0.9);
+  background: var(--primary-light);
+  transform: scale(0.998);
+}
 /* PROFILE */
 
 .profile-icon {
