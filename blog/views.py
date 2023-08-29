@@ -54,6 +54,10 @@ class PostDetail(View):
         queryset = Post.objects.filter(approved=True)
         newslug = slug.split("/")[-1]
         post = get_object_or_404(queryset, slug=newslug)
+        popular_posts = queryset.filter(category=post.category, approved=True).exclude(
+            pk=post.id
+        )
+        print(popular_posts)
         comments = post.comments.filter(approved=True).order_by("-created_on")
         liked = False
         if post.likes.filter(id=self.request.user.id).exists():
@@ -68,6 +72,7 @@ class PostDetail(View):
                 "commented": False,
                 "liked": liked,
                 "comment_form": CommentForm(),
+                "popular_posts": popular_posts,
             },
         )
 
@@ -122,7 +127,7 @@ class Profile(View):
         posts = Post.objects.filter(approved=True, author=user)
         posts_with_comment_count = []
         for post in posts:
-            comment_count = Comment.objects.filter(post=post).count()
+            comment_count = Comment.objects.filter(post=post, approved=True).count()
             posts_with_comment_count.append((post, comment_count))
 
         return render(
