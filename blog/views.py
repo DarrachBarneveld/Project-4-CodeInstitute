@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views import generic, View
 from django.urls import reverse_lazy
-from .models import Post, Category
+from .models import Post, Category, Comment
 from .forms import PostForm, EditProfileForm, CommentForm
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -112,8 +112,16 @@ class Profile(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         posts = Post.objects.filter(approved=True, author=user)
+        posts_with_comment_count = []
+        for post in posts:
+            comment_count = Comment.objects.filter(post=post).count()
+            posts_with_comment_count.append((post, comment_count))
 
-        return render(request, "profile.html", {"user": user, "posts": posts})
+        return render(
+            request,
+            "profile.html",
+            {"user": user, "posts_with_comment_count": posts_with_comment_count},
+        )
 
 
 class AddPost(generic.CreateView):

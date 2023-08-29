@@ -89,7 +89,11 @@
     <div class="row">
       <div class="col-6 col-lg-3">
         <div class="text-center">
-          <h6 class="counter h2" data-to="{{posts.count}}" data-duration="1000">
+          <h6
+            class="counter h2"
+            data-to="{{ posts_with_comment_count|length }}"
+            data-duration="1000"
+          >
             0
           </h6>
           <p class="m-0px font-w-600">
@@ -132,7 +136,7 @@
   <hr />
 
   <div class="row p-3">
-    {% for post in posts %}
+    {% for post, comment_count in posts_with_comment_count %}
     <div class="col-lg-3 col-md-6 g-3 mt-3 mb-3">
       <div class="card fade-in">
         <a
@@ -157,7 +161,7 @@
                 {{ post.number_of_likes}}
 
                 <i class="fa-solid fa-comments text-success"></i>
-                0
+                {{ comment_count }}
               </small>
               <small class="text-muted">
                 <i class="fas fa-calendar-alt text-end"></i>
