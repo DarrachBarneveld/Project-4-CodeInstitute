@@ -1,7 +1,7 @@
 :root {
   --primary-light: rgb(245, 245, 245);
   --primary-grey: rgb(210, 215, 211);
-  --neon-green: rgb(57, 255, 20);
+  --neon-green: hsl(111, 100%, 54%);
   --primary-blue: #48abe0;
   --neon-blue-glow: 0 0 10px 5px #48abe0;
 }
@@ -27,7 +27,7 @@
   opacity: 0;
   height: 2px;
   width: 80%;
-  background-color: greenyellow;
+  background-color: var(--neon-green);
   position: absolute;
   bottom: 0;
   left: 10%;
@@ -35,6 +35,37 @@
 
 .nav-link:hover::after {
   opacity: 1;
+}
+
+/* INDEX */
+
+.heading {
+  font-size: 3rem;
+}
+
+.banner-border {
+  position: absolute;
+  top: 180px;
+  left: 0;
+  width: 100%;
+  stroke: #4fd675;
+  z-index: -1;
+}
+
+.widget-list-inline li a {
+  padding: 2px 15px;
+  border: 1px solid var(--neon-green);
+  border-radius: 30px;
+  display: block;
+  color: #434343;
+  background-color: var(--primary-light);
+  transition: 300ms;
+  text-decoration: none;
+}
+
+.widget-list-inline li a:hover {
+  background: var(--neon-green);
+  color: white;
 }
 
 i {

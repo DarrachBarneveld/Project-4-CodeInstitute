@@ -2,10 +2,35 @@
 <!--  -->
 {% block content %}
 
-<div class="container-fluid">
+<!-- <h1 class="text-center text-light">{{category.title}}</h1> -->
+
+<div class="text-center position-relative p-5">
+  <h1 class="heading mb-5 text-light">
+    What Would You <br />
+    Like To Read Today?
+  </h1>
+  <ul class="list-inline widget-list-inline">
+    <li class="list-inline-item"><a href="tags.html">All</a></li>
+    <li class="list-inline-item"><a href="tags.html">Sports</a></li>
+    <li class="list-inline-item"><a href="tags.html">Gadgets</a></li>
+  </ul>
+  <svg
+    class="banner-border"
+    height="240"
+    viewBox="0 0 2202 240"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1 123.043C67.2858 167.865 259.022 257.325 549.762 188.784C764.181 125.427 967.75 112.601 1200.42 169.707C1347.76 205.869 1901.91 374.562 2201 1"
+      stroke-width="5"
+    ></path>
+  </svg>
+</div>
+<div class="container pt-5">
   <div class="row p-3">
     {% for post in posts %}
-    <div class="col-md-6 g-3 mt-3 mb-3">
+    <div class="col-md-4 g-3 mt-3 mb-3">
       <div class="card fade-in p-1">
         {% if "placeholder" in post.featured_image.url %}
         <img

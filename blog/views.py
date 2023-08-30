@@ -24,11 +24,10 @@ class PostList(generic.ListView):
 
 class CategoryPosts(generic.ListView):
     template_name = "index.html"
-    paginate_by = 2
+    paginate_by = 6
 
     def get(self, request, slug, *args, **kwargs):
         category = get_object_or_404(Category, title=slug)
-        category_list = Category.objects.all()
         posts = Post.objects.filter(category=category)
 
         # Create a Paginator object
@@ -43,10 +42,7 @@ class CategoryPosts(generic.ListView):
         return render(
             request,
             "index.html",
-            {
-                "posts": page,
-                "category_list": category_list,
-            },
+            {"posts": page, "category": category},
         )
 
 
