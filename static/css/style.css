@@ -16,6 +16,11 @@
   text-transform: capitalize;
 }
 
+.dropdown button {
+  border: none;
+  background: inherit;
+}
+
 .nav-link::after {
   content: "";
   transition: all 450ms;
@@ -94,7 +99,6 @@ img {
 }
 
 .popular-posts {
-  padding: 0.5rem;
   border: 1px solid black;
   border-radius: 0.5rem;
   transition: 300ms;

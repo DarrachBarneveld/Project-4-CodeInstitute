@@ -23,7 +23,7 @@ class PostList(generic.ListView):
 
 
 class CategoryPosts(generic.ListView):
-    template_name = "category_posts.html"
+    template_name = "index.html"
     paginate_by = 2
 
     def get(self, request, slug, *args, **kwargs):
@@ -42,7 +42,7 @@ class CategoryPosts(generic.ListView):
 
         return render(
             request,
-            "category_posts.html",
+            "index.html",
             {
                 "posts": page,
                 "category_list": category_list,

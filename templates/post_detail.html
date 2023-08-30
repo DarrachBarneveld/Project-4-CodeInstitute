@@ -154,39 +154,36 @@
                 href="{% url 'post_detail' post.slug  %}"
               >
                 <div class="popular-posts mb-3">
-                  <h5 class="text-capitalize text-primary">
-                    <strong> {{post.title}} </strong>
-                  </h5>
-                  <span class="text-muted"
-                    >{{post.created_on|date:"F d, Y" }}</span
-                  >
-                  <div class="img-post">
-                    {% if "placeholder" in post.featured_image.url %}
-                    <img
-                      src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
-                      class="img-fluid rounded"
-                    />
-                    {% else %}
-                    <img
-                      class="img-fluid rounded"
-                      src=" {{ post.featured_image.url }}"
-                    />
-                    {% endif %}
-                  </div>
-                  <p>{{post.excerpt}}</p>
-                  <p class="d-flex justify-content-between mb-0">
-                    <small class="text-dark">
-                      <i class="fa-solid fa-thumbs-up text-primary"></i>
-                      {{ post.number_of_likes}}
+                  {% if "placeholder" in post.featured_image.url %}
+                  <img
+                    src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
+                    class="img-fluid rounded w-100"
+                  />
+                  {% else %}
+                  <img
+                    class="img-fluid rounded w-100"
+                    src=" {{ post.featured_image.url }}"
+                  />
+                  {% endif %}
+                  <div class="p-2">
+                    <h4 class="text-capitalize text-primary">
+                      <strong> {{post.title}} </strong>
+                    </h4>
+                    <p>{{post.excerpt}}</p>
+                    <p class="d-flex justify-content-between mb-0">
+                      <small class="text-dark">
+                        <i class="fa-solid fa-thumbs-up text-primary"></i>
+                        {{ post.number_of_likes}}
 
-                      <i class="fa-solid fa-comments text-success"></i>
-                      {{ comment_count }}
-                    </small>
-                    <small class="text-muted">
-                      <i class="fas fa-calendar-alt text-end"></i>
-                      {{post.created_on|date:"F d, Y" }}
-                    </small>
-                  </p>
+                        <i class="fa-solid fa-comments text-success"></i>
+                        {{ comment_count }}
+                      </small>
+                      <small class="text-muted">
+                        <i class="fas fa-calendar-alt text-end"></i>
+                        {{post.created_on|date:"F d, Y" }}
+                      </small>
+                    </p>
+                  </div>
                 </div>
               </a>
 
