@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+<!--  -->
+{% block content %}
+
+<!-- <h1 class="text-center text-light">{{category.title}}</h1> -->
+
+<div class="container pt-5 text-center">
+  <h1 class="heading mb-5 text-light">
+    What Would You <br />
+    Like To Read Today?
+  </h1>
+  <ul class="list-inline widget-list-inline">
+    <li class="list-inline-item"><a href="tags.html">All</a></li>
+    <li class="list-inline-item"><a href="tags.html">Sports</a></li>
+    <li class="list-inline-item"><a href="tags.html">Gadgets</a></li>
+  </ul>
+
+  <!-- <div class="row p-3">
+    {% for category in categories %}
+    <div class="col-md-4 g-3 mt-3 mb-3">
+      <div class="card fade-in p-1">
+
+      </div>
+    </div>
+
+    {% endfor %}
+  </div> -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-5">
+        <h2 class="h5 section-title">Editors Pick</h2>
+      </div>
+      <div class="col-lg-4 mb-5">
+        <h2 class="h5 section-title">Trending Post</h2>
+      </div>
+
+      <div class="col-lg-4 mb-5">
+        <h2 class="h5 section-title">Popular Post</h2>
+
+        <article class="card">
+          <div class="card fade-in">
+            <a
+              class="text-decoration-none text-dark"
+              href="{% url 'post_detail' popular_post.slug  %}"
+            >
+              {% if "placeholder" in popular_post.featured_image.url %}
+              <img
+                class="card-img-top"
+                src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
+                width="100%"
+              />
+              {% else %}
+              <img
+                class="card-img-top"
+                src=" {{ popular_post.featured_image.url }}"
+              />
+              {% endif %}
+              <div class="card-body text-start">
+                <h5 class="card-title">{{ popular_post.title }}</h5>
+                <div class="d-flex gap-1">
+                  <label>
+                    <i class="fa-solid fa-trophy gold"></i>
+                    <a
+                      href="{% url 'profile' slug=popular_post.author.username %}"
+                      ><strong class="text-capitalize"
+                        >{{popular_post.author}}</strong
+                      ></a
+                    >
+                  </label>
+                </div>
+                <p class="card-text">{{popular_post.excerpt}}</p>
+                <p class="d-flex justify-content-between mb-0">
+                  <small class="text-dark">
+                    <i class="fa-solid fa-thumbs-up text-primary"></i>
+                    {{ popular_post.number_of_likes}}
+
+                    <i class="fa-solid fa-comments text-success"></i>
+                    {{ comment_count }}
+                  </small>
+                  <small class="text-muted">
+                    <i class="fas fa-calendar-alt text-end"></i>
+                    {{popular_post.created_on|date:"F d, Y" }}
+                  </small>
+                </p>
+              </div>
+            </a>
+          </div>
+        </article>
+      </div>
+      <div class="col-12">
+        <div class="border-bottom border-default"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  -->
+{%endblock%}

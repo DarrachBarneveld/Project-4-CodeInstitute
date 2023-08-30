@@ -7,13 +7,24 @@ from .models import Post, Category, Comment
 from .forms import PostForm, EditProfileForm, CommentForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 
 # Create your views here.
-class CategoryList(generic.ListView):
-    model = Category
-    queryset = Category.objects.all()
-    template_name = "index.html"
+class CategoryList(View):
+    def get(self, request, *args, **kwargs):
+        all_posts = Post.objects.filter(approved=True)
+        popular_post = (
+            Post.objects.annotate(like_count=Count("likes"))
+            .order_by("-like_count")
+            .first()
+        )
+
+        return render(
+            request,
+            "home.html",
+            {"all_posts": all_posts, "popular_post": popular_post},
+        )
 
 
 class PostList(generic.ListView):
