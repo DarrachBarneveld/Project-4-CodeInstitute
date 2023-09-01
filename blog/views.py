@@ -15,15 +15,24 @@ class CategoryList(View):
     def get(self, request, *args, **kwargs):
         all_posts = Post.objects.filter(approved=True)
         popular_post = (
-            Post.objects.annotate(like_count=Count("likes"))
-            .order_by("-like_count")
+            Post.objects.annotate(comment_count=Count("comments"))
+            .order_by("-comment_count")
             .first()
         )
+
+        print(popular_post)
+        trending_posts = all_posts.annotate(like_count=Count("likes")).order_by(
+            "-like_count"
+        )[:3]
 
         return render(
             request,
             "home.html",
-            {"all_posts": all_posts, "popular_post": popular_post},
+            {
+                "all_posts": all_posts,
+                "popular_post": popular_post,
+                "trending_posts": trending_posts,
+            },
         )
 
 
