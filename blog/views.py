@@ -15,15 +15,24 @@ class CategoryList(View):
     def get(self, request, *args, **kwargs):
         all_posts = Post.objects.filter(approved=True)
         popular_post = (
-            Post.objects.annotate(comment_count=Count("comments"))
+            all_posts.annotate(comment_count=Count("comments"))
             .order_by("-comment_count")
             .first()
         )
 
-        print(popular_post)
+        popular_post.comment_count = Comment.objects.filter(
+            post=popular_post, approved=True
+        ).count()
+
         trending_posts = all_posts.annotate(like_count=Count("likes")).order_by(
             "-like_count"
         )[:3]
+
+        editors_pick = get_object_or_404(Post, slug="ais-impact-on-todays-programmers")
+
+        editors_pick.comment_count = Comment.objects.filter(
+            post=editors_pick, approved=True
+        ).count()
 
         return render(
             request,
@@ -32,6 +41,7 @@ class CategoryList(View):
                 "all_posts": all_posts,
                 "popular_post": popular_post,
                 "trending_posts": trending_posts,
+                "editors_pick": editors_pick,
             },
         )
 

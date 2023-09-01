@@ -24,64 +24,48 @@
           <strong>Editors Pick</strong>
         </h2>
         <article class="card">
-          <div class="post-slider slider-sm slick-initialized slick-slider">
-            <div class="slick-list draggable">
-              <div
-                class="slick-track"
-                style="
-                  opacity: 1;
-                  width: 350px;
-                  transform: translate3d(0px, 0px, 0px);
-                "
-              >
-                <img
-                  src="images/post/post-1.jpg"
-                  class="card-img-top slick-slide slick-current slick-active"
-                  alt="post-thumb"
-                  data-slick-index="0"
-                  aria-hidden="false"
-                  style="width: 350px"
-                  tabindex="0"
-                />
-              </div>
-            </div>
-          </div>
+          <img
+            src="{{ editors_pick.featured_image.url }}"
+            class="card-img-top"
+            aria-hidden="false"
+          />
 
           <div class="card-body">
             <h3 class="h4 mb-3">
-              <a class="post-title" href="post-details.html"
-                >Use apples to give your bakes caramel and a moist texture</a
+              <strong class="text-uppercase"
+                ><a href="{% url 'post_detail' slug=editors_pick.slug %}"
+                  >{{editors_pick.title}}</a
+                ></strong
               >
             </h3>
-            <ul class="card-meta list-inline">
+            <ul class="list-inline">
               <li class="list-inline-item">
-                <a href="author-single.html" class="card-meta-author">
-                  <img src="images/john-doe.jpg" />
-                  <span>Charls Xaviar</span>
-                </a>
+                <i class="fa-solid fa-user text-info"></i>
+                <strong class="text-capitalize">{{editors_pick.author}}</strong>
               </li>
               <li class="list-inline-item">
-                <i class="ti-timer"></i>2 Min To Read
-              </li>
-              <li class="list-inline-item">
-                <i class="ti-calendar"></i>14 jan, 2020
-              </li>
-              <li class="list-inline-item">
-                <ul class="card-meta-tag list-inline">
-                  <li class="list-inline-item">
-                    <a href="tags.html">Color</a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a href="tags.html">Recipe</a>
-                  </li>
-                  <li class="list-inline-item"><a href="tags.html">Fish</a></li>
-                </ul>
+                <time class="m-2 text-muted">
+                  <i class="fas fa-calendar-alt"></i>
+                  {{ editors_pick.created_on|date:"M d, Y" }}
+                </time>
               </li>
             </ul>
-            <p>
-              It’s no secret that the digital industry is booming. From exciting
-              startups to …
-            </p>
+            <ul class="list-inline border-bottom">
+              <li class="list-inline-item">
+                <i class="fa-solid fa-sitemap purple"></i>
+                {{ editors_pick.category }}
+              </li>
+              <li class="list-inline-item">
+                <i class="fa-solid fa-thumbs-up text-primary"></i>
+                {{ editors_pick.number_of_likes }}
+              </li>
+              <li class="list-inline-item">
+                <i class="fa-solid fa-comments text-success"></i>
+                {{ editors_pick.comment_count }}
+              </li>
+            </ul>
+
+            <p class="mt-2">{{editors_pick.excerpt}}</p>
             <a href="post-details.html" class="btn btn-outline-primary"
               >Read More</a
             >
@@ -108,12 +92,9 @@
             <img class="card-img-sm" src=" {{ post.featured_image.url }}" />
             {% endif %}
             <div class="ps-2">
-              <h4>
-                <a href="post-details.html" class="post-title"
-                  ><strong>{{post.title}}</strong></a
-                >
-              </h4>
-
+              <h3 class="text-capitalize h6">
+                <a href="post-details.html"><strong>{{post.title}}</strong></a>
+              </h3>
               <ul class="list-inline">
                 <li class="list-inline-item">
                   <i class="fa-solid fa-user text-info"></i>
@@ -128,13 +109,13 @@
                 <li class="list-inline-item">
                   <small class="text-dark">
                     <i class="fa-solid fa-thumbs-up text-primary"></i>
-                    {{ popular_post.number_of_likes }}</small
+                    {{ post.number_of_likes }}</small
                   >
                 </li>
                 <li class="list-inline-item">
                   <small class="text-muted">
                     <i class="fas fa-calendar-alt text-end"></i>
-                    {{popular_post.created_on|date:"F d, Y" }}
+                    {{post.created_on|date:"F d, Y" }}
                   </small>
                 </li>
               </ul>
@@ -153,58 +134,58 @@
         </h2>
 
         <article class="card">
-          <div class="card fade-in position-relative">
-            <span class="position-absolute category-tag bg-purple">
-              <i class="fa-solid fa-sitemap text-white"></i>
-              {{popular_post.category}}
-            </span>
-            {% if "placeholder" in popular_post.featured_image.url %}
-            <img
-              class="card-img-top"
-              src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
-              width="100%"
-            />
-            {% else %}
-            <img
-              class="card-img-top"
-              src=" {{ popular_post.featured_image.url }}"
-            />
-            {% endif %}
-            <div class="card-body text-start">
-              <h3 class="card-title">{{ popular_post.title }}</h3>
-              <a
-                class="text-decoration-none align-items-center"
-                href="{% url 'profile' slug=popular_post.author.username %}"
-              >
-                <i
-                  class="bg-primary p-1 border border-dark border-2 rounded-circle fa-solid fa-trophy gold"
-                ></i
-                ><strong class="text-capitalize">
-                  {{popular_post.author}}
-                </strong></a
-              >
+          {% if "placeholder" in popular_post.featured_image.url %}
+          <img
+            class="card-img-top"
+            src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
+            width="100%"
+          />
+          {% else %}
+          <img
+            class="card-img-top"
+            src=" {{ popular_post.featured_image.url }}"
+          />
+          {% endif %}
 
-              <p class="card-text mt-2">{{popular_post.excerpt}}</p>
-              <p class="d-flex justify-content-between mb-0">
-                <small class="text-dark">
-                  <i class="fa-solid fa-thumbs-up text-primary"></i>
-                  {{ popular_post.number_of_likes}}
-
-                  <i class="fa-solid fa-comments text-success"></i>
-                  {{ comment_count }}
-                </small>
-                <small class="text-muted">
-                  <i class="fas fa-calendar-alt text-end"></i>
-                  {{popular_post.created_on|date:"F d, Y" }}
-                </small>
-              </p>
-
-              <a
-                class="mt-4 btn btn-outline-primary"
-                href="{% url 'post_detail' popular_post.slug  %}"
-                >Read More</a
+          <div class="card-body">
+            <h3 class="h4 mb-3">
+              <strong class="text-uppercase"
+                ><a href="{% url 'post_detail' slug=editors_pick.slug %}"
+                  >{{popular_post.title}}</a
+                ></strong
               >
-            </div>
+            </h3>
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <i class="fa-solid fa-user text-info"></i>
+                <strong class="text-capitalize">{{popular_post.author}}</strong>
+              </li>
+              <li class="list-inline-item">
+                <time class="m-2 text-muted">
+                  <i class="fas fa-calendar-alt"></i>
+                  {{ popular_post.created_on|date:"M d, Y" }}
+                </time>
+              </li>
+            </ul>
+            <ul class="list-inline border-bottom">
+              <li class="list-inline-item">
+                <i class="fa-solid fa-sitemap purple"></i>
+                {{ popular_post.category }}
+              </li>
+              <li class="list-inline-item">
+                <i class="fa-solid fa-thumbs-up text-primary"></i>
+                {{ popular_post.number_of_likes }}
+              </li>
+              <li class="list-inline-item">
+                <i class="fa-solid fa-comments text-success"></i>
+                {{ popular_post.comment_count }}
+              </li>
+            </ul>
+
+            <p class="mt-2">{{popular_post.excerpt}}</p>
+            <a href="post-details.html" class="btn btn-outline-primary"
+              >Read More</a
+            >
           </div>
         </article>
       </div>
