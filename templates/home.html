@@ -15,21 +15,14 @@
     <li class="list-inline-item"><a href="tags.html">Gadgets</a></li>
   </ul>
 
-  <!-- <div class="row p-3">
-    {% for category in categories %}
-    <div class="col-md-4 g-3 mt-3 mb-3">
-      <div class="card fade-in p-1">
-
-      </div>
-    </div>
-
-    {% endfor %}
-  </div> -->
-
   <div class="container">
     <div class="row">
       <div class="col-lg-4 mb-5">
-        <h2 class="h5 section-title">Editors Pick</h2>
+        <h2
+          class="section-title neon-green text-uppercase text-decoration-underline"
+        >
+          <strong>Editors Pick</strong>
+        </h2>
         <article class="card">
           <div class="post-slider slider-sm slick-initialized slick-slider">
             <div class="slick-list draggable">
@@ -96,12 +89,15 @@
         </article>
       </div>
       <div class="col-lg-4 mb-5">
-        <h2 class="h5 section-title">Trending Post</h2>
-
+        <h2
+          class="section-title neon-green text-uppercase text-decoration-underline"
+        >
+          <strong>Trending Posts</strong>
+        </h2>
         {% for post in trending_posts %}
 
-        <article class="card mb-4">
-          <div class="card-body d-flex">
+        <article class="card mb-4 text-start">
+          <div class="d-flex p-2">
             {% if "placeholder" in post.featured_image.url %}
             <img
               class="card-img-sm"
@@ -111,18 +107,35 @@
             {% else %}
             <img class="card-img-sm" src=" {{ post.featured_image.url }}" />
             {% endif %}
-            <div class="ml-3">
+            <div class="ps-2">
               <h4>
                 <a href="post-details.html" class="post-title"
-                  >{{post.title}}</a
+                  ><strong>{{post.title}}</strong></a
                 >
               </h4>
-              <ul class="card-meta list-inline mb-0">
-                <li class="list-inline-item mb-0">
-                  <i class="ti-calendar"></i>{{post.created_on|date:"F d, Y" }}
+
+              <ul class="list-inline">
+                <li class="list-inline-item">
+                  <i class="fa-solid fa-user text-info"></i>
+                  <strong class="text-capitalize">{{post.author}}</strong>
                 </li>
-                <li class="list-inline-item mb-0">
-                  <i class="ti-timer"></i>2 Min To Read
+                <li class="list-inline-item">
+                  <small class="text-dark">
+                    <i class="fa-solid fa-sitemap purple"></i>
+                    {{ post.category }}</small
+                  >
+                </li>
+                <li class="list-inline-item">
+                  <small class="text-dark">
+                    <i class="fa-solid fa-thumbs-up text-primary"></i>
+                    {{ popular_post.number_of_likes }}</small
+                  >
+                </li>
+                <li class="list-inline-item">
+                  <small class="text-muted">
+                    <i class="fas fa-calendar-alt text-end"></i>
+                    {{popular_post.created_on|date:"F d, Y" }}
+                  </small>
                 </li>
               </ul>
             </div>
@@ -133,13 +146,18 @@
       </div>
 
       <div class="col-lg-4 mb-5">
-        <h2 class="h5 section-title">Popular Post</h2>
+        <h2
+          class="section-title neon-green text-uppercase text-decoration-underline"
+        >
+          <strong>Popular Post</strong>
+        </h2>
 
         <article class="card">
           <div class="card fade-in position-relative">
-            <span class="position-absolute category-tag bg-primary"
-              >{{popular_post.category}}</span
-            >
+            <span class="position-absolute category-tag bg-purple">
+              <i class="fa-solid fa-sitemap text-white"></i>
+              {{popular_post.category}}
+            </span>
             {% if "placeholder" in popular_post.featured_image.url %}
             <img
               class="card-img-top"
