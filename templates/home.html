@@ -10,20 +10,27 @@
     Like To Read Today?
   </h1>
   <ul class="list-inline widget-list-inline">
-    <li class="list-inline-item"><a href="tags.html">All</a></li>
-    <li class="list-inline-item"><a href="tags.html">Sports</a></li>
-    <li class="list-inline-item"><a href="tags.html">Gadgets</a></li>
+    <li class="list-inline-item">
+      <a href="{% url 'index' 'All' %}">All</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="{% url 'index' 'Tech' %}">Tech</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="{% url 'index' 'Sport' %}">Sports</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="{% url 'index' 'Gadgets' %}">Gadgets</a>
+    </li>
   </ul>
 
-  <div class="container">
-    <div class="row">
+  <div class="container mt-5">
+    <div class="row pt-md-5">
       <div class="col-lg-4 mb-5">
-        <h2
-          class="section-title neon-green text-uppercase text-decoration-underline"
-        >
-          <strong>Editors Pick</strong>
+        <h2 class="article-title">
+          <strong><em>Editors Pick</em></strong>
         </h2>
-        <article class="card">
+        <article class="card fade-in">
           <img
             src="{{ editors_pick.featured_image.url }}"
             class="card-img-top"
@@ -66,21 +73,21 @@
             </ul>
 
             <p class="mt-2">{{editors_pick.excerpt}}</p>
-            <a href="post-details.html" class="btn btn-outline-primary"
+            <a
+              href="{% url 'post_detail' slug=editors_pick.slug %}"
+              class="btn btn-outline-primary"
               >Read More</a
             >
           </div>
         </article>
       </div>
       <div class="col-lg-4 mb-5">
-        <h2
-          class="section-title neon-green text-uppercase text-decoration-underline"
-        >
-          <strong>Trending Posts</strong>
+        <h2 class="article-title">
+          <strong><em>Trending Posts</em></strong>
         </h2>
         {% for post in trending_posts %}
 
-        <article class="card mb-4 text-start">
+        <article class="card mb-4 text-start fade-in">
           <div class="d-flex p-2">
             {% if "placeholder" in post.featured_image.url %}
             <img
@@ -93,7 +100,9 @@
             {% endif %}
             <div class="ps-2">
               <h3 class="text-capitalize h6">
-                <a href="post-details.html"><strong>{{post.title}}</strong></a>
+                <a href="{% url 'post_detail' slug=post.slug %}"
+                  ><strong>{{post.title}}</strong></a
+                >
               </h3>
               <ul class="list-inline">
                 <li class="list-inline-item">
@@ -127,13 +136,11 @@
       </div>
 
       <div class="col-lg-4 mb-5">
-        <h2
-          class="section-title neon-green text-uppercase text-decoration-underline"
-        >
-          <strong>Popular Post</strong>
+        <h2 class="article-title">
+          <strong><em>Popular Post</em></strong>
         </h2>
 
-        <article class="card">
+        <article class="card fade-in">
           {% if "placeholder" in popular_post.featured_image.url %}
           <img
             class="card-img-top"
@@ -183,7 +190,9 @@
             </ul>
 
             <p class="mt-2">{{popular_post.excerpt}}</p>
-            <a href="post-details.html" class="btn btn-outline-primary"
+            <a
+              href="{% url 'post_detail' slug=popular_post.slug %}"
+              class="btn btn-outline-primary"
               >Read More</a
             >
           </div>

@@ -57,11 +57,20 @@ class CategoryPosts(generic.ListView):
     paginate_by = 6
 
     def get(self, request, slug, *args, **kwargs):
-        category = get_object_or_404(Category, title=slug)
-        posts = Post.objects.filter(category=category)
+        if slug == "All":
+            posts = Post.objects.all()
+
+        else:
+            category = get_object_or_404(Category, title=slug)
+            posts = Post.objects.filter(category=category)
 
         # Create a Paginator object
         paginator = Paginator(posts, self.paginate_by)
+
+        for post in posts:
+            post.comment_count = Comment.objects.filter(
+                post=post, approved=True
+            ).count()
 
         # Get the current page number from the request's GET parameters
         page_number = request.GET.get("page")
@@ -72,7 +81,7 @@ class CategoryPosts(generic.ListView):
         return render(
             request,
             "index.html",
-            {"posts": page, "category": category},
+            {"posts": page, "category": slug},
         )
 
 

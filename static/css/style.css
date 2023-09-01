@@ -1,7 +1,7 @@
 :root {
   --primary-light: rgb(245, 245, 245);
   --primary-grey: rgb(210, 215, 211);
-  --neon-green: hsl(111, 100%, 54%);
+  --neon-green: rgb(59, 194, 14);
   --primary-blue: #48abe0;
   --neon-blue-glow: 0 0 10px 5px #48abe0;
   --neon-purple: rgb(171, 32, 253);
@@ -49,7 +49,7 @@
   top: 180px;
   left: 0;
   width: 100%;
-  stroke: #4fd675;
+  stroke: var(--neon-green);
   z-index: -1;
 }
 
@@ -82,6 +82,25 @@
   border: 1px solid black;
 }
 
+.article-title {
+  position: relative;
+  color: white;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.article-title:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--neon-green);
+  transform: skew(-30deg);
+}
+
 .card-img-sm {
   width: 100px;
   height: 100px;
@@ -101,6 +120,7 @@
 
 .neon-green {
   color: var(--neon-green);
+  border-color: var(--neon-green);
 }
 
 i {
@@ -129,6 +149,14 @@ img {
   color: white;
   padding: 0.25rem 1rem;
   border-radius: 10px;
+}
+
+.category-title {
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--neon-green);
+  margin-bottom: 2rem;
+  width: fit-content;
+  margin: auto;
 }
 
 .img-post img {
