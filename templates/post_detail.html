@@ -153,7 +153,7 @@
                 class="text-decoration-none text-dark"
                 href="{% url 'post_detail' post.slug  %}"
               >
-                <div class="popular-posts mb-3">
+                <article class="card fade-in mb-2">
                   {% if "placeholder" in post.featured_image.url %}
                   <img
                     src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
@@ -165,28 +165,42 @@
                     src=" {{ post.featured_image.url }}"
                   />
                   {% endif %}
-                  <div class="p-2">
-                    <h4 class="text-capitalize text-primary">
-                      <strong> {{post.title}} </strong>
-                    </h4>
-                    <p>{{post.excerpt}}</p>
-                    <p class="d-flex justify-content-between mb-0">
-                      <small class="text-dark">
-                        <i class="fa-solid fa-thumbs-up text-primary"></i>
-                        {{ post.number_of_likes}}
 
+                  <div class="card-body">
+                    <h3 class="h4 mb-3">
+                      <strong class="text-uppercase">{{post.title}} </strong>
+                    </h3>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">
+                        <i class="fa-solid fa-user text-info"></i>
+                        <strong class="text-capitalize">{{post.author}}</strong>
+                      </li>
+                      <li class="list-inline-item">
+                        <time class="m-2 text-muted">
+                          <i class="fas fa-calendar-alt"></i>
+                          {{ post.created_on|date:"M d, Y" }}
+                        </time>
+                      </li>
+                    </ul>
+                    <ul class="list-inline border-bottom">
+                      <li class="list-inline-item">
+                        <i class="fa-solid fa-sitemap purple"></i>
+                        {{ post.category }}
+                      </li>
+                      <li class="list-inline-item">
+                        <i class="fa-solid fa-thumbs-up text-primary"></i>
+                        {{ post.number_of_likes }}
+                      </li>
+                      <li class="list-inline-item">
                         <i class="fa-solid fa-comments text-success"></i>
                         {{ comment_count }}
-                      </small>
-                      <small class="text-muted">
-                        <i class="fas fa-calendar-alt text-end"></i>
-                        {{post.created_on|date:"F d, Y" }}
-                      </small>
-                    </p>
-                  </div>
-                </div>
-              </a>
+                      </li>
+                    </ul>
 
+                    <p class="mt-2">{{post.excerpt}}</p>
+                  </div>
+                </article>
+              </a>
               {% endfor %}
             </div>
           </div>
