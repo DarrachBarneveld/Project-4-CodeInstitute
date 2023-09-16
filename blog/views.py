@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404, reverse
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.http import HttpResponseRedirect
 from django.contrib.auth import update_session_auth_hash
 from django.views import generic, View
@@ -170,9 +170,14 @@ class Profile(View):
         posts = Post.objects.filter(approved=True, author=user)
         posts_with_comment_count = []
         favourites = user.blogpost_like.all()
+        total_posts = posts.__len__
+        total_comments = 0
+        total_likes = 0
 
         for post in posts:
+            total_likes += post.number_of_likes()
             comment_count = Comment.objects.filter(post=post, approved=True).count()
+            total_comments += comment_count
             posts_with_comment_count.append((post, comment_count))
 
         return render(
@@ -180,6 +185,9 @@ class Profile(View):
             "profile.html",
             {
                 "user": user,
+                "total_posts": total_posts,
+                "total_comments": total_comments,
+                "total_likes": total_likes,
                 "posts_with_comment_count": posts_with_comment_count,
                 "favourites": favourites,
             },
