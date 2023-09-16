@@ -11,19 +11,18 @@
   </h1>
   <ul class="list-inline widget-list-inline">
     <li class="list-inline-item">
-      <a href="{% url 'index' 'All' %}">All</a>
+      <a href="{% url 'index' 'tech'   %}">Tech</a>
     </li>
     <li class="list-inline-item">
-      <a href="{% url 'index' 'Tech' %}">Tech</a>
+      <a href="{% url 'index' 'coding'  %}">Coding</a>
     </li>
     <li class="list-inline-item">
-      <a href="{% url 'index' 'Sport' %}">Sports</a>
+      <a href="{% url 'index' 'gadgets'  %}">Gadgets</a>
     </li>
     <li class="list-inline-item">
-      <a href="{% url 'index' 'Gadgets' %}">Gadgets</a>
+      <a href="{% url 'index' 'events'  %}">Events</a>
     </li>
   </ul>
-
   <div class="container mt-5">
     <div class="row pt-md-5">
       <div class="col-lg-4 mb-5">
@@ -60,7 +59,7 @@
             <ul class="list-inline border-bottom">
               <li class="list-inline-item">
                 <i class="fa-solid fa-sitemap purple"></i>
-                {{ editors_pick.category }}
+                <span class="text-capitalize">{{ editors_pick.category }}</span>
               </li>
               <li class="list-inline-item">
                 <i class="fa-solid fa-thumbs-up text-primary"></i>
@@ -110,7 +109,7 @@
                   <strong class="text-capitalize">{{post.author}}</strong>
                 </li>
                 <li class="list-inline-item">
-                  <small class="text-dark">
+                  <small class="text-dark text-capitalize">
                     <i class="fa-solid fa-sitemap purple"></i>
                     {{ post.category }}</small
                   >
@@ -176,8 +175,10 @@
             </ul>
             <ul class="list-inline border-bottom">
               <li class="list-inline-item">
-                <i class="fa-solid fa-sitemap purple"></i>
-                {{ popular_post.category }}
+                <i class="fa-solid fa-sitemap purple text-capitalize"></i>
+                <span class="text-capitalize">
+                  {{ popular_post.category }}
+                </span>
               </li>
               <li class="list-inline-item">
                 <i class="fa-solid fa-thumbs-up text-primary"></i>

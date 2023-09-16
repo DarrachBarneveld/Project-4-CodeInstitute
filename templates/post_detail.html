@@ -18,7 +18,7 @@
             {% endif %}
           </div>
           <h6
-            class="text-uppercase text-primary fw-bolder mt-1 text-decoration-underline"
+            class="text-uppercase text-primary fw-bolder mt-1 text-decoration-underline text-capitalize"
           >
             {{post.category}}
           </h6>
@@ -142,7 +142,7 @@
     <div class="col-lg-4 col-md-12 right-box">
       <div class="card p-3">
         <div class="header">
-          <h2>Popular Posts in {{ post.category }}</h2>
+          <h2 class="text-capitalize">Popular Posts in {{ post.category }}</h2>
           <hr />
         </div>
         <div class="body">
@@ -189,8 +189,12 @@
                     </ul>
                     <ul class="list-inline border-bottom">
                       <li class="list-inline-item">
-                        <i class="fa-solid fa-sitemap purple"></i>
-                        {{ post.category }}
+                        <i
+                          class="fa-solid fa-sitemap purple text-capitalize"
+                        ></i>
+                        <span class="text-capitalize">
+                          {{ post.category }}
+                        </span>
                       </li>
                       <li class="list-inline-item">
                         <i class="fa-solid fa-thumbs-up text-primary"></i>

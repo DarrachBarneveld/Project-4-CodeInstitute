@@ -28,7 +28,9 @@ class CategoryList(View):
             "-like_count"
         )[:3]
 
-        editors_pick = get_object_or_404(Post, slug="ais-impact-on-todays-programmers")
+        editors_pick = get_object_or_404(
+            Post, slug="ais-influence-on-tech-shaping-the-future"
+        )
 
         editors_pick.comment_count = Comment.objects.filter(
             post=editors_pick, approved=True

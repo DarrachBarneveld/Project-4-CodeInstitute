@@ -17,9 +17,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(SummernoteModelAdmin):
-    list_display = ("title", "slug", "status", "created_on", "approved")
+    list_display = ("title", "slug", "created_on", "approved")
     search_fields = ["title", "content"]
-    list_filter = ("status", "created_on", "category")
+    list_filter = ("created_on", "category")
     prepopulated_fields = {"slug": ("title",)}
     summernote_fields = ("content",)
 
