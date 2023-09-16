@@ -8,12 +8,12 @@
           <div class="d-flex flex-column align-items-center text-center">
             <i class="fa-solid fa-trophy profile-icon gold"></i>
             <div class="mt-3">
-              <h4 class="text-capitalize">{{user_object.username}}</h4>
+              <h4 class="text-capitalize">{{user.username}}</h4>
               <p class="text-secondary mb-1">
-                Joined: {{user_object.date_joined|date:"F d, Y" }}
+                Joined: {{user.date_joined|date:"F d, Y" }}
               </p>
               <p class="text-secondary mb-1">
-                Last Online: {{user_object.last_login|date:"F d, Y" }}
+                Last Online: {{user.last_login|date:"F d, Y" }}
               </p>
             </div>
           </div>
@@ -28,7 +28,7 @@
               <h6 class="mb-0">First Name</h6>
             </div>
             <div class="col-sm-9 text-secondary text-capitalize">
-              {{user_object.first_name}}
+              {{user.first_name}}
             </div>
           </div>
           <hr />
@@ -38,7 +38,7 @@
               <h6 class="mb-0">Last Name</h6>
             </div>
             <div class="col-sm-9 text-secondary text-capitalize">
-              {{user_object.last_name}}
+              {{user.last_name}}
             </div>
           </div>
           <hr />
@@ -46,7 +46,7 @@
             <div class="col-sm-3">
               <h6 class="mb-0">Email</h6>
             </div>
-            <div class="col-sm-9 text-secondary">{{user_object.email}}</div>
+            <div class="col-sm-9 text-secondary">{{user.email}}</div>
           </div>
           <hr />
           <div class="row">
@@ -57,7 +57,7 @@
           </div>
           <hr />
 
-          {% if user.is_authenticated and user.id == user_object.id %}
+          {% if user.is_authenticated and user.id == user.id %}
           <div class="row">
             <div class="col-sm-12">
               <a
@@ -123,7 +123,7 @@
 </section>
 
 <section id="user-posts" class="p-4 text-center text-light">
-  <h2 class="text-capitalize">{{user_object.username}}s Posts</h2>
+  <h2 class="text-capitalize">{{user.username}}s Posts</h2>
   <hr />
 
   <div class="row p-3">
@@ -171,6 +171,60 @@
               </li>
             </ul>
 
+            <p class="mt-2">{{post.excerpt}}</p>
+          </div>
+        </article>
+      </a>
+    </div>
+
+    {% endfor %}
+  </div>
+</section>
+
+<section id="favourites" class="p-4 text-center text-light">
+  <h2 class="text-capitalize">Favourites</h2>
+  <hr />
+
+  <div class="row p-3">
+    {% for post in favourites %}
+    <div class="col-lg-3 col-md-6 g-3 mt-3 mb-3">
+      <a
+        class="text-decoration-none text-dark"
+        href="{% url 'post_detail' post.slug  %}"
+      >
+        <article class="card fade-in mb-2">
+          {% if "placeholder" in post.featured_image.url %}
+          <img
+            src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
+            class="img-fluid rounded w-100"
+          />
+          {% else %}
+          <img
+            class="img-fluid rounded w-100"
+            src=" {{ post.featured_image.url }}"
+          />
+          {% endif %}
+
+          <div class="card-body text-dark">
+            <h3 class="h4 mb-3">
+              <strong class="text-uppercase">{{post.title}} </strong>
+            </h3>
+            <ul class="list-inline border-bottom">
+              <li class="list-inline-item">
+                <i class="fa-solid fa-sitemap purple"></i>
+                {{ post.category }}
+              </li>
+              <li class="list-inline-item">
+                <i class="fa-solid fa-thumbs-up text-primary"></i>
+                {{ post.number_of_likes }}
+              </li>
+              <li class="list-inline-item">
+                <time class="m-2 text-muted">
+                  <i class="fas fa-calendar-alt"></i>
+                  {{ post.created_on|date:"M d, Y" }}
+                </time>
+              </li>
+            </ul>
             <p class="mt-2">{{post.excerpt}}</p>
           </div>
         </article>

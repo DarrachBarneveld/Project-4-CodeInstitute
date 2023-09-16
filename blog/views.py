@@ -169,6 +169,8 @@ class Profile(View):
         user = get_object_or_404(queryset)
         posts = Post.objects.filter(approved=True, author=user)
         posts_with_comment_count = []
+        favourites = user.blogpost_like.all()
+
         for post in posts:
             comment_count = Comment.objects.filter(post=post, approved=True).count()
             posts_with_comment_count.append((post, comment_count))
@@ -176,7 +178,11 @@ class Profile(View):
         return render(
             request,
             "profile.html",
-            {"user_object": user, "posts_with_comment_count": posts_with_comment_count},
+            {
+                "user": user,
+                "posts_with_comment_count": posts_with_comment_count,
+                "favourites": favourites,
+            },
         )
 
 
