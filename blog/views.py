@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import update_session_auth_hash
 from django.views import generic, View
 from .models import Post, Category, Comment
-from .forms import PostForm, EditProfileForm, CommentForm
+from .forms import PostForm, EditProfileForm, CommentForm, EditBioForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.db.models import Count
@@ -204,12 +204,14 @@ class UpdateProfileView(View):
     template_name = "update_profile.html"
     user_form_class = EditProfileForm
     password_form_class = PasswordChangeForm
+    bio_form_class = EditBioForm
 
-    def get_context_data(self, user_form=None, password_form=None):
+    def get_context_data(self, user_form=None, password_form=None, bio_form=None):
         user = self.request.user
         context = {
             "user_form": user_form or self.user_form_class(instance=user),
             "password_form": password_form or self.password_form_class(user),
+            "bio_form": bio_form or self.bio_form_class(instance=user.profile),
         }
         return context
 
@@ -222,6 +224,18 @@ class UpdateProfileView(View):
 
         user_form = self.user_form_class(request.POST, instance=user)
         password_form = self.password_form_class(user, request.POST)
+        bio_form = self.bio_form_class(request.POST, instance=user.profile)
+
+        if "bio_change" in request.POST:
+            print("valid")
+            if bio_form.is_valid():
+                bio_form.save()
+                context = self.get_context_data(bio_form=bio_form)
+                return render(request, self.template_name, context)
+
+            else:
+                context = self.get_context_data(user_form=bio_form)
+                return render(request, self.template_name, context)
 
         if "password_change" in request.POST:
             if password_form.is_valid():
@@ -238,7 +252,6 @@ class UpdateProfileView(View):
                 return redirect("profile")
             else:
                 context = self.get_context_data(user_form=user_form)
-                print(context)
                 return render(request, self.template_name, context)
 
         if "delete_account" in request.POST:

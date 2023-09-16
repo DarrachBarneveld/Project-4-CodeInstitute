@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Comment
+from .models import Post, Category, Comment, Profile
 from django_summernote.admin import SummernoteModelAdmin
 
 
@@ -7,6 +7,11 @@ class PostInline(admin.TabularInline):
     model = Post
     fields = ("title", "approved", "excerpt")
     extra = 0
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ["bio"]
 
 
 @admin.register(Category)

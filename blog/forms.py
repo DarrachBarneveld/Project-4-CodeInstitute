@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment
+from .models import Post, Comment, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 from django_summernote.widgets import SummernoteWidget
@@ -21,8 +21,17 @@ class EditProfileForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name")
+        fields = ["username", "email", "first_name", "last_name"]
         help_texts = {"username": None}
+
+
+class EditBioForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["bio"]
+        widgets = {
+            "bio": forms.TextInput(),
+        }
 
 
 class CommentForm(forms.ModelForm):

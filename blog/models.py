@@ -4,6 +4,14 @@ from django.utils.text import slugify
 from cloudinary.models import CloudinaryField
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    bio = models.TextField()
+
+    def __str__(self):
+        return str(self.user)
+
+
 class Category(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
