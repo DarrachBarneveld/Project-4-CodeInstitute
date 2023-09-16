@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from cloudinary.models import CloudinaryField
 
-STATUS = ((0, "Pending"), (1, "Published"))
-
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
@@ -31,7 +29,6 @@ class Post(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now=True)
-    status = models.IntegerField(choices=STATUS, default=0)
     likes = models.ManyToManyField(User, related_name="blogpost_like", blank=True)
     approved = models.BooleanField(default=False)
 
