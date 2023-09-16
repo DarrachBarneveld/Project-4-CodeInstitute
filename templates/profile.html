@@ -129,39 +129,52 @@
   <div class="row p-3">
     {% for post, comment_count in posts_with_comment_count %}
     <div class="col-lg-3 col-md-6 g-3 mt-3 mb-3">
-      <div class="card fade-in">
-        <a
-          class="text-decoration-none text-dark"
-          href="{% url 'post_detail' post.slug  %}"
-        >
+      <a
+        class="text-decoration-none text-dark"
+        href="{% url 'post_detail' post.slug  %}"
+      >
+        <article class="card fade-in mb-2">
           {% if "placeholder" in post.featured_image.url %}
           <img
-            class="card-img-top"
             src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
-            width="100%"
+            class="img-fluid rounded w-100"
           />
           {% else %}
-          <img class="card-img-top" src=" {{ post.featured_image.url }}" />
+          <img
+            class="img-fluid rounded w-100"
+            src=" {{ post.featured_image.url }}"
+          />
           {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{post.excerpt}}</p>
-            <p class="d-flex justify-content-between mb-0">
-              <small class="text-dark">
-                <i class="fa-solid fa-thumbs-up text-primary"></i>
-                {{ post.number_of_likes}}
 
+          <div class="card-body text-dark">
+            <h3 class="h4 mb-3">
+              <strong class="text-uppercase">{{post.title}} </strong>
+            </h3>
+            <ul class="list-inline border-bottom">
+              <li class="list-inline-item">
+                <i class="fa-solid fa-sitemap purple"></i>
+                {{ post.category }}
+              </li>
+              <li class="list-inline-item">
+                <i class="fa-solid fa-thumbs-up text-primary"></i>
+                {{ post.number_of_likes }}
+              </li>
+              <li class="list-inline-item">
                 <i class="fa-solid fa-comments text-success"></i>
                 {{ comment_count }}
-              </small>
-              <small class="text-muted">
-                <i class="fas fa-calendar-alt text-end"></i>
-                {{post.created_on|date:"F d, Y" }}
-              </small>
-            </p>
+              </li>
+              <li class="list-inline-item">
+                <time class="m-2 text-muted">
+                  <i class="fas fa-calendar-alt"></i>
+                  {{ post.created_on|date:"M d, Y" }}
+                </time>
+              </li>
+            </ul>
+
+            <p class="mt-2">{{post.excerpt}}</p>
           </div>
-        </a>
-      </div>
+        </article>
+      </a>
     </div>
 
     {% endfor %}
