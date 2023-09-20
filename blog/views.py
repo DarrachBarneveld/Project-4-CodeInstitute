@@ -170,6 +170,8 @@ class Profile(View):
         total_comments = 0
         total_likes = 0
 
+        print(user.id)
+
         for post in posts:
             total_likes += post.number_of_likes()
             comment_count = Comment.objects.filter(post=post, approved=True).count()
@@ -180,7 +182,7 @@ class Profile(View):
             request,
             "profile.html",
             {
-                "user": user,
+                "profile": user,
                 "total_posts": total_posts,
                 "total_comments": total_comments,
                 "total_likes": total_likes,
