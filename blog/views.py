@@ -208,6 +208,8 @@ class UpdateProfileView(View):
     password_form_class = PasswordChangeForm
     bio_form_class = EditBioForm
 
+    # getform func
+
     def get_context_data(self, user_form=None, password_form=None, bio_form=None):
         user = self.request.user
         context = {
