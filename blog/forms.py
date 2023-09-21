@@ -1,6 +1,7 @@
 from django import forms
 from .models import Post, Comment, Profile
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import UserChangeForm
 from django_summernote.widgets import SummernoteWidget
 
@@ -32,6 +33,20 @@ class EditBioForm(forms.ModelForm):
         widgets = {
             "bio": forms.TextInput(),
         }
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Remove autofocus attribute from the old password field
+        self.fields["old_password"].widget.attrs.pop("autofocus", None)
+
+        # Remove autofocus attribute from the new password1 field
+        self.fields["new_password1"].widget.attrs.pop("autofocus", None)
+
+        # Remove autofocus attribute from the new password2 field
+        self.fields["new_password2"].widget.attrs.pop("autofocus", None)
 
 
 class CommentForm(forms.ModelForm):

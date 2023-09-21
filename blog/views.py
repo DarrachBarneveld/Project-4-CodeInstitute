@@ -5,8 +5,13 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import update_session_auth_hash
 from django.views import generic, View
 from .models import Post, Category, Comment
-from .forms import PostForm, EditProfileForm, CommentForm, EditBioForm
-from django.contrib.auth.forms import PasswordChangeForm
+from .forms import (
+    PostForm,
+    EditProfileForm,
+    CommentForm,
+    EditBioForm,
+    CustomPasswordChangeForm,
+)
 from django.contrib.auth.models import User
 from django.db.models import Count
 
@@ -206,7 +211,7 @@ class AddPost(generic.CreateView):
 class UpdateProfileView(View):
     template_name = "update_profile.html"
     user_form_class = EditProfileForm
-    password_form_class = PasswordChangeForm
+    password_form_class = CustomPasswordChangeForm
     bio_form_class = EditBioForm
 
     def get_context_data(self, user_form=None, password_form=None, bio_form=None):
@@ -251,7 +256,7 @@ class UpdateProfileView(View):
 
         if "update_profile" in request.POST:
             if user_form.is_valid():
-                user_form.save(commit=False)
+                user_form.save()
                 context = self.get_context_data(user_form=user_form)
                 return render(request, self.template_name, context)
 
