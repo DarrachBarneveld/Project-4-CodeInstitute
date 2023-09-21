@@ -232,6 +232,21 @@
         </section>
       </div>
     </footer>
+    <script>
+      function validateUsername() {
+        // Get the username input element by its ID
+        var usernameInput = document.getElementById("id_username");
+        var usernameValue = usernameInput.value;
+
+        // Check if the username contains spaces
+        if (usernameValue.indexOf(" ") !== -1) {
+          alert("Username cannot contain spaces.");
+          return false; // Prevent form submission
+        }
+
+        return true; // Allow form submission
+      }
+    </script>
     <script
       src="https://kit.fontawesome.com/27545168c5.js"
       crossorigin="anonymous"

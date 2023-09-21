@@ -4,7 +4,7 @@
     <div class="col-12 col-md-6 p-5 bg-custom rounded-3">
       <h1>Edit Your User Information</h1>
       <hr />
-      <form method="post" class="mb-5">
+      <form method="post" class="mb-5" onsubmit="return validateUsername()">
         {% csrf_token %} {{ user_form | crispy }}
         <button class="btn btn-info" type="submit" name="update_profile">
           <i class="fa-solid fa-user"></i>Update User Information

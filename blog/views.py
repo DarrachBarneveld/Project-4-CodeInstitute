@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.utils.text import slugify
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.http import HttpResponseRedirect
 from django.contrib.auth import update_session_auth_hash
@@ -208,8 +209,6 @@ class UpdateProfileView(View):
     password_form_class = PasswordChangeForm
     bio_form_class = EditBioForm
 
-    # getform func
-
     def get_context_data(self, user_form=None, password_form=None, bio_form=None):
         user = self.request.user
         context = {
@@ -231,7 +230,6 @@ class UpdateProfileView(View):
         bio_form = self.bio_form_class(request.POST, instance=user.profile)
 
         if "bio_change" in request.POST:
-            print("valid")
             if bio_form.is_valid():
                 bio_form.save()
                 context = self.get_context_data(bio_form=bio_form)
@@ -245,16 +243,20 @@ class UpdateProfileView(View):
             if password_form.is_valid():
                 password_form.save()
                 update_session_auth_hash(self.request, self.request.user)
-                return redirect("profile")
+                context = self.get_context_data(password_form=password_form)
+                return render(request, self.template_name, context)
             else:
                 context = self.get_context_data(password_form=password_form)
                 return render(request, self.template_name, context)
 
         if "update_profile" in request.POST:
             if user_form.is_valid():
-                user_form.save()
-                return redirect("profile")
+                user_form.save(commit=False)
+                context = self.get_context_data(user_form=user_form)
+                return render(request, self.template_name, context)
+
             else:
+                print("valid")
                 context = self.get_context_data(user_form=user_form)
                 return render(request, self.template_name, context)
 
@@ -264,6 +266,6 @@ class UpdateProfileView(View):
             return redirect("home")
 
         context = self.get_context_data(
-            user_form=user_form, password_form=password_form
+            user_form=user_form, password_form=password_form, bio_form=bio_form
         )
         return render(request, self.template_name, context)
