@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+<!--  -->
+{% block content %}
+
+<div class="container pt-5 text-center text-white">
+  <h1>Access Blocked</h1>
+
+  <p>You do not have permission!</p>
+
+  <a class="btn btn-success" href="{% url 'home'  %}">Return Home</a>
+</div>
+
+{%endblock%}

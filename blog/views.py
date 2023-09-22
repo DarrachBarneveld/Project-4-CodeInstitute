@@ -2,7 +2,8 @@ from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, reverse, redirect
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
+from django.template.response import TemplateResponse
 from django.contrib.auth import update_session_auth_hash
 from django.views import generic, View
 from .models import Post, Category, Comment
@@ -220,9 +221,11 @@ class EditPost(LoginRequiredMixin, generic.UpdateView):
         return Post.objects.filter(author=self.request.user)
 
     def dispatch(self, request, *args, **kwargs):
-        post = self.get_object()
-        if post.author != self.request.user:
-            return HttpResponseForbidden("You don't have permission to edit this post.")
+        try:
+            post = self.get_object()
+        except Http404:
+            return TemplateResponse(self.request, "no_permission.html")
+
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
