@@ -229,6 +229,15 @@ class EditPost(LoginRequiredMixin, generic.UpdateView):
 
         return super().dispatch(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        if "delete_post" in request.POST:
+            post = self.get_object()
+            post.delete()
+            return redirect("/")  # Redirect to the success URL
+
+        # Handle other form submissions as before
+        return super().post(request, *args, **kwargs)
+
     def form_valid(self, form):
         form.instance.approved = False
         return super().form_valid(form)
