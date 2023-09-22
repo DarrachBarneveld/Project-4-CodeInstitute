@@ -146,6 +146,56 @@
   <hr />
 
   <div class="row p-3">
+    {% for post in pending_posts %}
+    <div class="col-lg-3 col-md-6 g-3 mt-3 mb-3">
+      <article class="card fade-in mb-2 position-relative">
+        <div class="position-absolute overlay">
+          <i class="fa-solid fa-clock text-white"></i>
+          <span>Pending Approval</span>
+        </div>
+        {% if "placeholder" in post.featured_image.url %}
+        <img
+          src="https://codeinstitute.s3.amazonaws.com/fullstack/blog/default.jpg"
+          class="img-fluid rounded w-100"
+        />
+        {% else %}
+        <img
+          class="img-fluid rounded w-100"
+          src=" {{ post.featured_image.url }}"
+        />
+        {% endif %}
+
+        <div class="card-body text-dark">
+          <h3 class="h5 mb-3">
+            <strong class="text-uppercase">{{post.title}}</strong>
+          </h3>
+          <ul class="list-inline border-bottom">
+            <li class="list-inline-item">
+              <i class="fa-solid fa-sitemap purple text-capitalize"></i>
+              <span class="text-capitalize">{{ post.category }}</span>
+            </li>
+            <li class="list-inline-item">
+              <i class="fa-solid fa-thumbs-up text-primary"></i>
+              {{ post.number_of_likes }}
+            </li>
+            <li class="list-inline-item">
+              <i class="fa-solid fa-comments text-success"></i>
+              {{ comment_count }}
+            </li>
+            <li class="list-inline-item">
+              <time class="m-2 text-muted">
+                <i class="fas fa-calendar-alt"></i>
+                {{ post.created_on|date:"M d, Y" }}
+              </time>
+            </li>
+          </ul>
+
+          <p class="mt-2">{{post.excerpt}}</p>
+        </div>
+      </article>
+    </div>
+    {% endfor %}
+    <!--  -->
     {% for post, comment_count in posts_with_comment_count %}
     <div class="col-lg-3 col-md-6 g-3 mt-3 mb-3">
       <a

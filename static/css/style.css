@@ -12,6 +12,18 @@
   background: var(--primary-light);
 }
 
+.overlay {
+  background: rgba(0, 0, 0, 0.8);
+  border: 3px solid var(--neon-green);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 2rem;
+  align-items: center;
+}
+
 .nav-link {
   position: relative;
   text-transform: capitalize;
@@ -314,13 +326,6 @@ img {
 .logout:hover {
   background: var(--neon-green);
 }
-/* 
-.user_form-group {
-  border: 1px solid #ccc !important;
-  padding: 5px !important;
-  border-radius: 5px !important;
-  width: 100% !important;
-} */
 
 .touched:invalid {
   /* outline: 1px solid red; */

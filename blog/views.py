@@ -172,7 +172,8 @@ class Profile(View):
         # user = request.user
         queryset = User.objects.filter(username=slug)
         user = get_object_or_404(queryset)
-        posts = Post.objects.filter(approved=True, author=user)
+        posts = Post.objects.filter(author=user, approved=True)
+        pending_posts = Post.objects.filter(author=user, approved=False)
         posts_with_comment_count = []
         favourites = user.blogpost_like.all()
         total_posts = posts.__len__
@@ -192,6 +193,7 @@ class Profile(View):
             "profile.html",
             {
                 "profile": user,
+                "pending_posts": pending_posts,
                 "total_posts": total_posts,
                 "total_comments": total_comments,
                 "total_likes": total_likes,
@@ -215,25 +217,25 @@ class EditPost(LoginRequiredMixin, generic.UpdateView):
     model = Post
     form_class = PostForm
     template_name = "edit_post.html"
-    # success_url = reverse_lazy("home")
+    success_url = "/"
 
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user)
 
     def dispatch(self, request, *args, **kwargs):
         try:
-            post = self.get_object()
+            self.get_object()
         except Http404:
             return TemplateResponse(self.request, "no_permission.html")
 
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        form.instance.approved = False
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy("post_detail", args=[self.object.slug])
+    # def get_success_url(self):
+    #     return reverse_lazy("post_detail", args=[self.object.slug])
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
