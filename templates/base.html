@@ -234,18 +234,26 @@
     </footer>
     <script>
       function validateUsername() {
-        // Get the username input element by its ID
         var usernameInput = document.getElementById("id_username");
         var usernameValue = usernameInput.value;
 
-        // Check if the username contains spaces
         if (usernameValue.indexOf(" ") !== -1) {
           alert("Username cannot contain spaces.");
-          return false; // Prevent form submission
+          return false;
         }
 
-        return true; // Allow form submission
+        return true;
       }
+
+      function markInputsAsTouched() {
+        var inputElements = document.querySelectorAll("input");
+        inputElements.forEach(function (input) {
+          input.addEventListener("focus", function () {
+            input.classList.add("touched");
+          });
+        });
+      }
+      markInputsAsTouched();
     </script>
     <script
       src="https://kit.fontawesome.com/27545168c5.js"

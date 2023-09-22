@@ -6,10 +6,12 @@
       <hr />
       <form method="post" class="mb-5" onsubmit="return validateUsername()">
         {% csrf_token %} {{ user_form | crispy }}
+
         <button class="btn btn-info" type="submit" name="update_profile">
           <i class="fa-solid fa-user"></i>Update User Information
         </button>
       </form>
+
       <form method="post" class="mb-5">
         {% csrf_token %}{{ bio_form | crispy }}
         <button class="btn btn-info" type="submit" name="bio_change">
