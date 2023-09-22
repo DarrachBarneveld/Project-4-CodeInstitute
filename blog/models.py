@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from cloudinary.models import CloudinaryField
+from django.db.models.signals import post_save
 
 
 class Profile(models.Model):
@@ -10,6 +11,14 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+post_save.connect(create_user_profile, sender=User)
 
 
 class Category(models.Model):

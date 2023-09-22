@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.db import models
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.template.response import TemplateResponse

@@ -30,13 +30,58 @@
       <h2>Delete Your Account</h2>
       <hr />
 
-      <form method="post">
-        {% csrf_token %}
-        <button class="btn btn-danger" type="submit" name="delete_account">
-          <i class="fa-solid fa-trash"></i>Delete Account
-        </button>
-      </form>
+      <!-- Modal -->
+      <button
+        type="button"
+        class="btn btn-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        <i class="fa-solid fa-trash"></i>Delete Account
+      </button>
 
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Are you sure!?</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">This action cannot be undone!</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <form method="post">
+                {% csrf_token %}
+                <button
+                  class="btn btn-danger"
+                  type="submit"
+                  name="delete_account"
+                >
+                  <i class="fa-solid fa-trash"></i>Delete Account
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       {% endblock content %}
     </div>
   </div>
