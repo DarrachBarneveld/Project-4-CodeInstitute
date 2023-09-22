@@ -98,7 +98,7 @@ class PostDetail(View):
         popular_posts_with_comment_count = []
 
         for pop_post in popular_posts:
-            comment_count = Comment.objects.filter(post=post, approved=True).count()
+            comment_count = Comment.objects.filter(post=pop_post, approved=True).count()
             popular_posts_with_comment_count.append((pop_post, comment_count))
 
         comments = post.comments.filter(approved=True).order_by("-created_on")

@@ -79,7 +79,7 @@
           <div class="mt-2 mb-2">{{ post.content | safe }}</div>
         </div>
       </article>
-      <section class="card p-3 mt-3">
+      <section id="comments" class="card p-3 mt-3">
         <div class="header">
           <h2>
             {% with comments.count as total_comments %}
@@ -120,7 +120,7 @@
           </ul>
         </div>
       </section>
-      <section class="card p-3 mt-3 mb-3">
+      <section id="add-comment" class="card p-3 mt-3 mb-3">
         <h2>Like what you read? Leave a comment!</h2>
         <hr />
         <div class="card-body">
@@ -139,7 +139,7 @@
         </div>
       </section>
     </div>
-    <div class="col-lg-4 col-md-12 right-box">
+    <section id="popular-posts" class="col-lg-4 col-md-12 right-box">
       <div class="card p-3">
         <div class="header">
           <h2 class="text-capitalize">Popular Posts in {{ post.category }}</h2>
@@ -215,7 +215,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </div>
 
