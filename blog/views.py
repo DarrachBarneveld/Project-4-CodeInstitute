@@ -1,7 +1,8 @@
 from django.core.paginator import Paginator
-from django.utils.text import slugify
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, reverse, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth import update_session_auth_hash
 from django.views import generic, View
 from .models import Post, Category, Comment
@@ -199,7 +200,7 @@ class Profile(View):
         )
 
 
-class AddPost(generic.CreateView):
+class AddPost(LoginRequiredMixin, generic.CreateView):
     form_class = PostForm
     template_name = "add_post.html"
     success_url = "/"
@@ -207,6 +208,34 @@ class AddPost(generic.CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class EditPost(LoginRequiredMixin, generic.UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = "edit_post.html"
+    # success_url = reverse_lazy("home")
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
+
+    def dispatch(self, request, *args, **kwargs):
+        post = self.get_object()
+        if post.author != self.request.user:
+            return HttpResponseForbidden("You don't have permission to edit this post.")
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("post_detail", args=[self.object.slug])
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["instance"] = self.object  # Pass the post instance to the form
+        return kwargs
 
 
 class UpdateProfileView(View):

@@ -191,6 +191,10 @@
             </ul>
 
             <p class="mt-2">{{post.excerpt}}</p>
+
+            <a href="{% url 'edit_post' pk=post.pk %}" class="btn btn-primary"
+              >Edit</a
+            >
           </div>
         </article>
       </a>
