@@ -175,7 +175,7 @@ class Profile(View):
         posts = Post.objects.filter(author=user, approved=True)
         pending_posts = Post.objects.filter(author=user, approved=False)
         posts_with_comment_count = []
-        favourites = user.blogpost_like.all()
+        favourites = user.blogpost_like.all().filter(approved=True)
         total_posts = posts.__len__
         total_comments = 0
         total_likes = 0
