@@ -300,8 +300,7 @@ class UpdateProfileView(View):
                 return render(request, self.template_name, context)
 
         if "delete_account" in request.POST:
-            self.object = self.get_object()
-            self.object.delete()
+            user.delete()
             return redirect("home")
 
         context = self.get_context_data(

@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import Post, Category, Comment, Profile
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
 from django_summernote.admin import SummernoteModelAdmin
 
 
@@ -9,9 +11,22 @@ class PostInline(admin.TabularInline):
     extra = 0
 
 
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ["bio"]
+class ProfileInline(admin.StackedInline):
+    model = Profile
+
+
+class UserAdmin(admin.ModelAdmin):
+    model = User
+    fields = ("username", "first_name", "last_name", "email")
+    inlines = [ProfileInline]
+
+
+# @admin.register(Profile)
+# class ProfileAdmin(admin.ModelAdmin):
+#     list_display = ["bio"]
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 
 
 @admin.register(Category)
