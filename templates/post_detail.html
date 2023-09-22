@@ -4,7 +4,7 @@
 
 <div id="main-content" class="container">
   <div class="row clearfix">
-    <div class="col-lg-8 col-md-12 left-box">
+    <section id="main-post" class="col-lg-8 col-md-12 left-box">
       <article class="card single_post">
         <div class="body p-3">
           <div class="img-post border rounded">
@@ -38,40 +38,49 @@
                 <span class="text-secondary">{{post.created_on}}</span>
               </div>
             </div>
-            <!-- The number of likes goes before the closing strong tag -->
-            <strong class="h3">
-              {% if user.is_authenticated %}
-              <form
-                class="d-inline"
-                action="{% url 'post_like' post.slug %}"
-                method="POST"
+
+            <div class="d-flex align-items-center justify-content-center gap-2">
+              {% if user.is_authenticated and user == post.author %}
+              <a href="{% url 'edit_post' pk=post.pk %}" class="btn btn-primary"
+                ><i class="fa-solid fa-pen-to-square"></i>Edit</a
               >
-                {% csrf_token %} {% if liked %}
-                <button
-                  type="submit"
-                  name="blogpost_id"
-                  value="{{post.slug}}"
-                  class="btn-like"
-                >
-                  <i class="fa-solid fa-thumbs-up text-primary"></i>
-                </button>
-                {% else %}
-                <button
-                  type="submit"
-                  name="blogpost_id"
-                  value="{{post.slug}}"
-                  class="btn-like text-primary"
-                >
-                  <i class="fa-regular fa-thumbs-up"></i>
-                </button>
-                {% endif %}
-              </form>
-              {% else %}
-              <span class="text-secondary"><i class="far fa-heart"></i></span>
               {% endif %}
-              <!-- The number of likes goes before the closing strong tag -->
-              <span class="text-secondary">{{ post.number_of_likes }} </span>
-            </strong>
+
+              <strong class="h3 m-0">
+                {% if user.is_authenticated %}
+                <form
+                  class="d-inline"
+                  action="{% url 'post_like' post.slug %}"
+                  method="POST"
+                >
+                  {% csrf_token %} {% if liked %}
+                  <button
+                    type="submit"
+                    name="blogpost_id"
+                    value="{{post.slug}}"
+                    class="btn-like"
+                  >
+                    <i class="fa-solid fa-thumbs-up text-primary"></i>
+                  </button>
+                  {% else %}
+                  <button
+                    type="submit"
+                    name="blogpost_id"
+                    value="{{post.slug}}"
+                    class="btn-like text-primary"
+                  >
+                    <i class="fa-regular fa-thumbs-up"></i>
+                  </button>
+                  {% endif %}
+                </form>
+
+                {% else %}
+                <span class="text-secondary"><i class="far fa-heart"></i></span>
+                {% endif %}
+                <!-- The number of likes goes before the closing strong tag -->
+                <span class="text-secondary">{{ post.number_of_likes }} </span>
+              </strong>
+            </div>
           </div>
 
           <hr />
@@ -138,7 +147,7 @@
           {% endif %} {% endif %}
         </div>
       </section>
-    </div>
+    </section>
     <section id="popular-posts" class="col-lg-4 col-md-12 right-box">
       <div class="card p-3">
         <div class="header">
