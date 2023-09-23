@@ -145,6 +145,15 @@
   <h2 class="text-capitalize">{{profile.username}}s Posts</h2>
   <hr />
 
+  {% if posts_with_comment_count|length == 0 %}
+  <!--  -->
+
+  <p class="text-capitalize h4">
+    {{profile.username}} has no posts!
+    <i class="fa-solid fa-face-sad-tear"></i>
+  </p>
+  {% endif %}
+
   <div class="row p-3">
     {% if user.is_authenticated and user.id == profile.id %}
     <!--  -->
@@ -271,10 +280,10 @@
     {% if favourites|length == 0 %}
     <!--  -->
 
-    <h3>
-      {{user.username}} has no favourites!
+    <p class="text-capitalize h4">
+      {{profile.username}} has no favourites!
       <i class="fa-solid fa-face-sad-tear"></i>
-    </h3>
+    </p>
     {% endif %}
     <!--  -->
 
