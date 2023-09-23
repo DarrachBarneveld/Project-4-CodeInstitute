@@ -112,7 +112,7 @@
         <div class="text-center">
           <h6
             class="counter h2"
-            data-to="{{ favourites|length }}"
+            data-to="{{ total_likes }}"
             data-duration="1000"
           >
             0
@@ -252,11 +252,6 @@
               ><i class="fa-solid fa-pen-to-square"></i>Edit</a
             >
             {% endif %}
-            <a
-              href="{% url 'post_detail' slug=post.slug %}"
-              class="btn btn-outline-primary"
-              >Read More</a
-            >
           </div>
         </article>
       </a>
@@ -303,10 +298,16 @@
           {% endif %}
 
           <div class="card-body text-dark">
-            <h3 class="h4 mb-3">
+            <h3 class="h5 mb-3">
               <strong class="text-uppercase">{{post.title}} </strong>
             </h3>
             <ul class="list-inline border-bottom">
+              <li class="list-inline-item">
+                <i class="fa-solid fa-user text-info"></i>
+                <a href="{% url 'profile' slug=post.author.username %}">
+                  <strong class="text-capitalize"> {{post.author}}</strong>
+                </a>
+              </li>
               <li class="list-inline-item">
                 <i class="fa-solid fa-sitemap purple text-capitalize"></i>
                 <span class="text-capitalize">{{ post.category }}</span>
@@ -322,7 +323,13 @@
                 </time>
               </li>
             </ul>
+
             <p class="mt-2">{{post.excerpt}}</p>
+            {% if user.is_authenticated and user.id == post.author.id %}
+            <a href="{% url 'edit_post' pk=post.pk %}" class="btn btn-primary"
+              ><i class="fa-solid fa-pen-to-square"></i>Edit</a
+            >
+            {% endif %}
           </div>
         </article>
       </a>
