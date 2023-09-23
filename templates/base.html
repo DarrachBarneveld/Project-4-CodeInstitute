@@ -227,18 +227,6 @@
       </div>
     </footer>
     <script>
-      function validateUsername() {
-        var usernameInput = document.getElementById("id_username");
-        var usernameValue = usernameInput.value;
-
-        if (usernameValue.indexOf(" ") !== -1) {
-          alert("Username cannot contain spaces.");
-          return false;
-        }
-
-        return true;
-      }
-
       function markInputsAsTouched() {
         var inputElements = document.querySelectorAll("input");
         inputElements.forEach(function (input) {

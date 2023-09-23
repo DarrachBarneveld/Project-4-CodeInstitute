@@ -20,6 +20,14 @@ class PostForm(forms.ModelForm):
 class EditProfileForm(UserChangeForm):
     password = None
 
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+
+        if " " in username:
+            raise forms.ValidationError("Username cannot contain spaces.")
+
+        return username
+
     class Meta:
         model = User
         fields = ["username", "email", "first_name", "last_name"]
