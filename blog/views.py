@@ -133,8 +133,13 @@ class PostDetail(View):
 
         comment_form = CommentForm(data=request.POST)
 
+        if "delete_comment" in request.POST:
+            comment_id = request.POST.get("comment_id")
+            comment = Comment.objects.get(id=comment_id)
+            comment.delete()
+            return redirect("/")
+
         if comment_form.is_valid():
-            print(request.user)
             comment_form.instance.email = request.user.email
             comment_form.instance.name = request.user
             comment = comment_form.save(commit=False)
@@ -233,21 +238,17 @@ class EditPost(LoginRequiredMixin, generic.UpdateView):
         if "delete_post" in request.POST:
             post = self.get_object()
             post.delete()
-            return redirect("/")  # Redirect to the success URL
+            return redirect("/")
 
-        # Handle other form submissions as before
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.approved = False
         return super().form_valid(form)
 
-    # def get_success_url(self):
-    #     return reverse_lazy("post_detail", args=[self.object.slug])
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs["instance"] = self.object  # Pass the post instance to the form
+        kwargs["instance"] = self.object
         return kwargs
 
 
