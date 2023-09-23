@@ -67,7 +67,7 @@ class CategoryPosts(generic.ListView):
 
         else:
             category = get_object_or_404(Category, title=slug)
-            posts = Post.objects.filter(category=category)
+            posts = Post.objects.filter(category=category, approved=True)
 
         # Create a Paginator object
         paginator = Paginator(posts, self.paginate_by)
