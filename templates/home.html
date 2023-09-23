@@ -2,24 +2,22 @@
 <!--  -->
 {% block content %}
 
-<!-- <h1 class="text-center text-light">{{category.title}}</h1> -->
-
 <div class="container pt-5 text-center">
   <h1 class="heading mb-5 text-light">
     What Would You <br />
     Like To Read Today?
   </h1>
   <ul class="list-inline widget-list-inline">
-    <li class="list-inline-item">
+    <li class="list-inline-item m-1">
       <a href="{% url 'index' 'tech'   %}">Tech</a>
     </li>
-    <li class="list-inline-item">
+    <li class="list-inline-item m-1">
       <a href="{% url 'index' 'coding'  %}">Coding</a>
     </li>
-    <li class="list-inline-item">
+    <li class="list-inline-item m-1">
       <a href="{% url 'index' 'gadgets'  %}">Gadgets</a>
     </li>
-    <li class="list-inline-item">
+    <li class="list-inline-item m-1">
       <a href="{% url 'index' 'events'  %}">Events</a>
     </li>
   </ul>
@@ -90,7 +88,7 @@
         </h2>
         {% for post in trending_posts %}
 
-        <article class="card mb-4 fade-in">
+        <article class="card mb-4 fade-in text-start">
           <div class="d-flex p-2">
             {% if "placeholder" in post.featured_image.url %}
             <img

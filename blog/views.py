@@ -1,3 +1,5 @@
+# pylint: disable=E1101
+
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
