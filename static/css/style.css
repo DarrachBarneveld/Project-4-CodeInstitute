@@ -157,6 +157,31 @@ img {
   object-fit: cover;
 }
 
+/* ADD POST */
+.add-post input,
+.add-post textarea,
+.add-post select {
+  border: 2px solid var(--neon-green);
+}
+
+.add-post input[type="file"] {
+  border: 2px solid var(--neon-green);
+}
+
+.add-post label {
+  font-weight: bold;
+}
+
+.add-post #div_id_image a {
+  color: black !important;
+}
+
+.summernote-div {
+  border: 2px solid var(--neon-green);
+  overflow: hidden;
+  border-radius: 5px;
+}
+
 /* POST DETAIL */
 
 .category {

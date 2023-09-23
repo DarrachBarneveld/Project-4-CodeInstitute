@@ -65,6 +65,11 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+SUMMERNOTE_CONFIG = {
+    "width": "100%",
+    "height": "300",
+}
+
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
