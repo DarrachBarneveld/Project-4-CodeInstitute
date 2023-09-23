@@ -54,6 +54,10 @@
   opacity: 1;
 }
 
+.card-body {
+  padding: 0.33rem !important;
+}
+
 /* INDEX */
 
 .heading {
