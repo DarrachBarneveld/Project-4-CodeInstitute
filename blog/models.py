@@ -8,6 +8,7 @@ from django.db.models.signals import post_save
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
+    slug = models.SlugField(unique=True, max_length=100, null=True, blank=True)
 
     def __str__(self):
         return str(self.user)
@@ -15,7 +16,7 @@ class Profile(models.Model):
 
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(user=instance, slug=slugify(instance.username))
 
 
 post_save.connect(create_user_profile, sender=User)

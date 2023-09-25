@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.template.response import TemplateResponse
 from django.contrib.auth import update_session_auth_hash
 from django.views import generic, View
-from .models import Post, Category, Comment
+from .models import Post, Category, Comment, Profile
 from .forms import (
     PostForm,
     EditProfileForm,
@@ -19,6 +19,7 @@ from .forms import (
 )
 from django.contrib.auth.models import User
 from django.db.models import Count
+from .models import Profile
 
 
 # Create your views here.
@@ -46,6 +47,8 @@ class CategoryList(View):
         editors_pick.comment_count = Comment.objects.filter(
             post=editors_pick, approved=True
         ).count()
+
+        print(request.user)
 
         return render(
             request,
@@ -175,11 +178,12 @@ class PostLike(View):
         return HttpResponseRedirect(reverse("post_detail", args=[slug]))
 
 
-class Profile(View):
+class ProfileView(View):
     def get(self, request, slug, *args, **kwargs):
-        # user = request.user
-        queryset = User.objects.filter(username=slug)
-        user = get_object_or_404(queryset)
+        # queryset = User.objects.filter(username=slug)
+        profile = get_object_or_404(Profile, slug=slug)
+        user = get_object_or_404(User, username=profile)
+
         posts = Post.objects.filter(author=user, approved=True)
         pending_posts = Post.objects.filter(author=user, approved=False)
         posts_with_comment_count = []
