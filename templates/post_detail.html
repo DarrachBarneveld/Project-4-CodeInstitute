@@ -31,7 +31,7 @@
               </div>
               <div class="author-body">
                 <label class="text-capitalize">
-                  <a href="{% url 'profile' slug=post.author.username %}"
+                  <a href="{% url 'profile' slug=post.author.profile.slug %}"
                     ><strong>{{post.author}}</strong></a
                   >
                 </label>
@@ -242,7 +242,9 @@
                     <ul class="list-inline">
                       <li class="list-inline-item">
                         <i class="fa-solid fa-user text-info"></i>
-                        <a href="{% url 'profile' slug=post.author.username %}">
+                        <a
+                          href="{% url 'profile' slug=post.author.profile.slug %}"
+                        >
                           <strong class="text-capitalize">
                             {{post.author}}</strong
                           >

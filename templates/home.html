@@ -45,7 +45,9 @@
             <ul class="list-inline">
               <li class="list-inline-item">
                 <i class="fa-solid fa-user text-info"></i>
-                <a href="{% url 'profile' slug=editors_pick.author.username %}">
+                <a
+                  href="{% url 'profile' slug=editors_pick.author.profile.slug %}"
+                >
                   <strong class="text-capitalize">
                     {{editors_pick.author}}</strong
                   >
@@ -108,7 +110,7 @@
               <ul class="list-inline">
                 <li class="list-inline-item">
                   <i class="fa-solid fa-user text-info"></i>
-                  <a href="{% url 'profile' slug=post.author.username %}">
+                  <a href="{% url 'profile' slug=post.author.profile.slug %}">
                     <strong class="text-capitalize"> {{post.author}}</strong>
                   </a>
                 </li>
@@ -168,7 +170,9 @@
             <ul class="list-inline">
               <li class="list-inline-item">
                 <i class="fa-solid fa-user text-info"></i>
-                <a href="{% url 'profile' slug=popular_post.author.username %}">
+                <a
+                  href="{% url 'profile' slug=popular_post.author.profile.slug %}"
+                >
                   <strong class="text-capitalize">
                     {{popular_post.author}}</strong
                   >

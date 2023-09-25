@@ -313,7 +313,7 @@
             <ul class="list-inline border-bottom">
               <li class="list-inline-item">
                 <i class="fa-solid fa-user text-info"></i>
-                <a href="{% url 'profile' slug=post.author.username %}">
+                <a href="{% url 'profile' slug=post.author.profile.slug %}">
                   <strong class="text-capitalize"> {{post.author}}</strong>
                 </a>
               </li>
