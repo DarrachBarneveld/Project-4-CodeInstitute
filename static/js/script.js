@@ -24,3 +24,9 @@ $(".counter").each(function () {
     }
   );
 });
+
+$("input").each(function () {
+  $(this).on("focus", function () {
+    $(this).addClass("touched");
+  });
+});

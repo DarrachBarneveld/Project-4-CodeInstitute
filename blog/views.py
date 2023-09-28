@@ -1,11 +1,14 @@
+"""Views"""
+
 # pylint: disable=E1101
 
+
+from django.contrib.auth.models import User
+from django.db.models import Count
+from django.http import HttpResponseRedirect, Http404
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.db import models
 from django.shortcuts import render, get_object_or_404, reverse, redirect
-from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.template.response import TemplateResponse
 from django.contrib.auth import update_session_auth_hash
 from django.views import generic, View
@@ -17,14 +20,21 @@ from .forms import (
     EditBioForm,
     CustomPasswordChangeForm,
 )
-from django.contrib.auth.models import User
-from django.db.models import Count
-from .models import Profile
 
 
 # Create your views here.
 class CategoryList(View):
+    """
+    A view class for displaying a list of categories and featured posts on the homepage.
+
+    """
+
     def get(self, request, *args, **kwargs):
+        """
+        Retrieves the posts from the database and returns the most popular, trending by likes
+        and editors pick
+
+        """
         all_posts = Post.objects.filter(approved=True)
         popular_post = (
             all_posts.annotate(comment_count=Count("comments"))
@@ -63,10 +73,18 @@ class CategoryList(View):
 
 
 class CategoryPosts(generic.ListView):
+    """
+    A view class for displaying a list of posts based on a specific category.
+
+    """
+
     template_name = "index.html"
     paginate_by = 6
 
     def get(self, request, slug, *args, **kwargs):
+        """
+        Retrieves the posts related to a category from the database
+        """
         if slug == "All":
             posts = Post.objects.all()
 
@@ -96,7 +114,19 @@ class CategoryPosts(generic.ListView):
 
 
 class PostDetail(View):
+    """
+    A view class for displaying and managing individual post details.
+
+    Methods:
+    - `get`: Handles GET requests to display post details, comments, and related posts.
+    - `post`: Handles POST requests for commenting on or deleting comments on a post.
+
+    """
+
     def get(self, request, slug, *args, **kwargs):
+        """
+        Retrieves the post, comments and popular related posts from the database
+        """
         queryset = Post.objects.filter(approved=True)
         newslug = slug.split("/")[-1]
         post = get_object_or_404(queryset, slug=newslug)
@@ -128,6 +158,10 @@ class PostDetail(View):
         )
 
     def post(self, request, slug, *args, **kwargs):
+        """
+        This method is called when a POST request is made to the view
+        via the comment form or delete comment.
+        """
         queryset = Post.objects.filter(approved=True)
         newslug = slug.split("/")[-1]
         post = get_object_or_404(queryset, slug=newslug)
@@ -167,7 +201,18 @@ class PostDetail(View):
 
 
 class PostLike(View):
+    """
+    Handles the liking/unliking of a post.
+
+    Methods:
+    - post: Handles the POST request to like or unlike a post and redirects the
+      user to the post's detail page.
+    """
+
     def post(self, request, slug):
+        """
+        Handles the liking/unliking of a post and redirects to the post's detail page.
+        """
         post = get_object_or_404(Post, slug=slug)
 
         if post.likes.filter(id=request.user.id).exists():
@@ -179,8 +224,25 @@ class PostLike(View):
 
 
 class ProfileView(View):
+    """
+    Displays the user profile page with user information and their posts.
+
+    Methods:
+    - get: Handles the GET request to display the user profile page.
+    """
+
     def get(self, request, slug, *args, **kwargs):
-        # queryset = User.objects.filter(username=slug)
+        """
+        Handles the GET request to display the user profile page.
+
+        Args:
+        - request: The HTTP request object.
+        - slug: The slug of the user's profile.
+
+        Returns:
+        - HttpResponse: Renders the user profile page with user information
+          and statistics.
+        """
         profile = get_object_or_404(Profile, slug=slug)
         user = get_object_or_404(User, username=profile)
 
@@ -214,6 +276,18 @@ class ProfileView(View):
 
 
 class AddPost(LoginRequiredMixin, generic.CreateView):
+    """
+    Allows a logged-in user to create a new blog post.
+
+    Methods:
+    - form_valid: Overrides the base method to set the post author to the
+      currently logged-in user before saving the form.
+
+    Mixins:
+    - LoginRequiredMixin: Ensures that only authenticated users can access
+      this view.
+    """
+
     form_class = PostForm
     template_name = "add_post.html"
     success_url = "/"
@@ -224,15 +298,45 @@ class AddPost(LoginRequiredMixin, generic.CreateView):
 
 
 class EditPost(LoginRequiredMixin, generic.UpdateView):
+    """
+    Allows a logged-in user to edit an existing blog post.
+
+    - get_queryset: Filters the queryset to only include posts authored by
+      the currently logged-in user.
+    - dispatch: Overrides the base method to handle the case where the post
+      is not found and returns a custom template response.
+    - post: Handles HTTP POST requests, allowing the user to delete their post.
+    - form_valid: Overrides the base method to set the post as unapproved after
+      editing.
+    - get_form_kwargs: Overrides the base method to provide the instance to the
+      form.
+
+    Mixins:
+    - LoginRequiredMixin: Ensures that only authenticated users can access
+      this view, and they must be the author of the post.
+    """
+
     model = Post
     form_class = PostForm
     template_name = "edit_post.html"
     success_url = "/"
 
     def get_queryset(self):
+        """
+        Filters the queryset to include only posts authored by the user.
+
+        Returns:
+        - QuerySet: A filtered queryset containing the user's authored posts.
+        """
         return Post.objects.filter(author=self.request.user)
 
     def dispatch(self, request, *args, **kwargs):
+        """
+        Handles the view's dispatch, including handling non-existent posts.
+
+        Returns:
+        - TemplateResponse: Renders a custom template for non-existent posts.
+        """
         try:
             self.get_object()
         except Http404:
@@ -241,6 +345,12 @@ class EditPost(LoginRequiredMixin, generic.UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Handles HTTP POST requests, allowing the user to delete their post.
+
+        Returns:
+        - HttpResponseRedirect: Redirects to the success URL after post deletion.
+        """
         if "delete_post" in request.POST:
             post = self.get_object()
             post.delete()
@@ -249,22 +359,52 @@ class EditPost(LoginRequiredMixin, generic.UpdateView):
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
+        """
+        Handles a valid form submission and sets the post as unapproved.
+
+        Returns:
+        - HttpResponse: Redirects to the success URL after saving the post.
+        """
         form.instance.approved = False
         return super().form_valid(form)
 
     def get_form_kwargs(self):
+        """
+        Provides the instance to the form.
+
+        Returns:
+        - dict: A dictionary containing keyword arguments for the form.
+        """
+
         kwargs = super().get_form_kwargs()
         kwargs["instance"] = self.object
         return kwargs
 
 
 class UpdateProfileView(View):
+    """
+    Allows a user to update their profile information, including username,
+    password, and bio.
+
+    Methods:
+    - get_context_data: Retrieves context data for rendering the profile update
+      page, including user information and forms.
+    - get: Handles HTTP GET requests for rendering the profile update page.
+    - post: Handles HTTP POST requests for processing form submissions and
+      updating the profile information.
+    """
+
     template_name = "update_profile.html"
     user_form_class = EditProfileForm
     password_form_class = CustomPasswordChangeForm
     bio_form_class = EditBioForm
 
     def get_context_data(self, user_form=None, password_form=None, bio_form=None):
+        """
+        Retrieves context data for rendering the profile update page.
+        Returns:
+        - dict: A dictionary containing context data for rendering the page.
+        """
         user = self.request.user
         context = {
             "user_form": user_form or self.user_form_class(instance=user),
@@ -274,12 +414,26 @@ class UpdateProfileView(View):
         return context
 
     def get(self, request, *args, **kwargs):
+        """
+        Handles HTTP GET requests for rendering the profile update page.
+
+        Returns:
+        - HttpResponse: Renders the profile update page with context data.
+        """
         context = self.get_context_data()
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        user = request.user
+        """
+        Handles HTTP POST requests for processing form submissions and updating
+        profile information.
 
+        Returns:
+        - HttpResponse: Renders the profile update page with context data after
+          processing the form submissions.
+        """
+
+        user = request.user
         user_form = self.user_form_class(request.POST, instance=user)
         password_form = self.password_form_class(user, request.POST)
         bio_form = self.bio_form_class(request.POST, instance=user.profile)
