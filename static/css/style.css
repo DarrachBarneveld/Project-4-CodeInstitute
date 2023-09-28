@@ -267,6 +267,26 @@ img {
 
 /* SOCIALS */
 
+.github:hover,
+.github:focus {
+  transition: all 0.2s;
+  transform: scale(1.1);
+  filter: brightness(1.1);
+  cursor: pointer;
+  color: white !important;
+  background: #f17f06;
+}
+
+.linkedin:hover,
+.linkedin:focus {
+  transition: all 0.2s;
+  transform: scale(1.1);
+  filter: brightness(1.1);
+  cursor: pointer;
+  color: white !important;
+  background: #0e76a8;
+}
+
 .twitter:hover,
 .twitter:focus {
   transition: all 0.2s;
