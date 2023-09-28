@@ -1,4 +1,5 @@
 """Models"""
+# pylint: disable=E1101
 
 
 from django.db import models
