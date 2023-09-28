@@ -8,6 +8,11 @@ from cloudinary.models import CloudinaryField
 
 
 class Profile(models.Model):
+    """
+    Model to represent user profiles.
+
+    """
+
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
     slug = models.SlugField(unique=True, max_length=100, null=True, blank=True)
@@ -17,6 +22,12 @@ class Profile(models.Model):
 
 
 def create_user_profile(sender, instance, created, **kwargs):
+    """
+    Signal handler function to create a user profile when a new user is created.
+
+    This function is connected to the User model's post_save signal.
+    It creates a user profile with a slug based on the user's username when a new user is created.
+    """
     if created:
         Profile.objects.create(user=instance, slug=slugify(instance.username))
 
@@ -25,17 +36,29 @@ models.signals.post_save.connect(create_user_profile, sender=User)
 
 
 class Category(models.Model):
+    """
+    Model to represent categories for blog posts.
+    """
+
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
 
     class Meta:
+        """To update the name shown in the plural form"""
+
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return self.title
+        return f"{self.title}"
 
 
 class Post(models.Model):
+    """
+    Model to represent a blog post.
+
+    This model represents a blog post with various attributes such as title, author, content, category, and likes.
+    """
+
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(
@@ -53,12 +76,16 @@ class Post(models.Model):
     approved = models.BooleanField(default=False)
 
     class Meta:
+        """To display the posts by created_on in ascending order"""
+
         ordering = ["-created_on"]
 
     def __str__(self):
-        return self.title
+        return f"{self.title}"
 
     def number_of_likes(self):
+        """To calculate the amount of likes on a post"""
+        # pylint: disable=no-member
         return self.likes.count()
 
     def save(self, *args, **kwargs):
@@ -68,6 +95,10 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    """
+    Represents a comment on a blog post.
+    """
+
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     name = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     email = models.EmailField()
@@ -76,6 +107,8 @@ class Comment(models.Model):
     approved = models.BooleanField(default=False)
 
     class Meta:
+        """To display the comments by created_on in ascending order"""
+
         ordering = ["created_on"]
 
     def __str__(self):
