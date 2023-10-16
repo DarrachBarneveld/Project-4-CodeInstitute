@@ -5,7 +5,7 @@
 <hr>
 Cool Coders is your go-to hub for all things tech, offering a wealth of insightful posts on coding, industry trends, gadgets and more. Engage with a global community by favoriting posts, leaving comments, and sparking discussions. Share your own tech experiences through user-generated posts. Join Cool Coders today and immerse yourself in the dynamic world of technology.
 
-![automarket Image](./assets/readme-images/main-image.PNG)
+![CoolCoders Image](./assets/readme-images/main-image.PNG)
 
 # Table Of Content
 
